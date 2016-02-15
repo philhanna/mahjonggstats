@@ -12,9 +12,15 @@ class HistoryList:
     def __init__(self):
         self.filename = HistoryList.DEFAULT_FILENAME
         self.levels = {}
+        self.earliestDate = None
+        self.latestDate = None
         with open(self.filename, "rt") as f:
             for line in f:
                 history = History(line)
+                if self.earliestDate == None or history.date < self.earliestDate:
+                    self.earliestDate = history.date
+                if self.latestDate == None or history.date > self.latestDate:
+                    self.latestDate = history.date
                 level = history.level
                 recordList = self.getRecordList(level)
                 recordList.add(history)
@@ -68,7 +74,7 @@ class History:
 
     def __str__(self):
         return ("{date}: {time}".format(
-            date=self.date.strftime("%Y-%m-%d"),
+            date=self.date.strftime("%m/%d/%Y"),
             time=self.secondsAsMMSS()
         ))
 
@@ -78,9 +84,14 @@ class History:
 if __name__ == '__main__':
     
     historyList = HistoryList()
+    print("Mahjongg history from {} to {}".format(
+        historyList.earliestDate.strftime("%m/%d/%Y"),
+        historyList.latestDate.strftime("%m/%d/%Y")
+        ))
     for level in historyList.levels:
         recordList = historyList.getRecordList(level)
         print("Records in level '{}'".format(level))
         print("    mean = {}".format(recordList.getMean()))
+        print("    top five scores:")
         for history in recordList.getRecords()[:5]:
             print("        {}".format(history))
