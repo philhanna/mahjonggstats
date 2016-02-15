@@ -101,7 +101,9 @@ if __name__ == '__main__':
         start=historyList.earliestDate.strftime("%m/%d/%Y"),
         end=historyList.latestDate.strftime("%m/%d/%Y")
         ))
-    for level in historyList.levels:
+    levelNames = [key for key in historyList.levels.keys()]
+    levelNames.sort()
+    for level in levelNames:
         recordList = historyList.getRecordList(level)
         print("\n{count} games at level '{level}'".
             format(
