@@ -25,28 +25,39 @@ class HistoryList:
                 recordList = self.getRecordList(level)
                 recordList.add(history)
 
+        self.count = 0
         for level in self.levels:
-            self.getRecordList(level).sort()
+            recordList = self.getRecordList(level)
+            recordList.sort()
+            self.count += recordList.getCount()
 
     def getRecordList(self, level):
         if level not in self.levels:
             self.levels[level] = RecordList()
         return self.levels[level]
 
+    def getCount(self):
+        return self.count
+
 class RecordList:
     """ A list of records at a particular level
     """
     def __init__(self):
         self.records = []
+        self.count = 0
 
     def add(self, history):
         self.records.append(history)
+        self.count += 1
 
     def sort(self):
         self.records.sort(key=lambda history: history.seconds)
 
     def getRecords(self):
         return self.records
+
+    def getCount(self):
+        return self.count
 
     def getMean(self):
         times = [h.seconds for h in self.records]
@@ -84,14 +95,22 @@ class History:
 if __name__ == '__main__':
     
     historyList = HistoryList()
-    print("Mahjongg history from {} to {}".format(
-        historyList.earliestDate.strftime("%m/%d/%Y"),
-        historyList.latestDate.strftime("%m/%d/%Y")
+
+    print("\nMahjongg history of {count} games from {start} to {end}".format(
+        count=historyList.getCount(),
+        start=historyList.earliestDate.strftime("%m/%d/%Y"),
+        end=historyList.latestDate.strftime("%m/%d/%Y")
         ))
     for level in historyList.levels:
         recordList = historyList.getRecordList(level)
-        print("Records in level '{}'".format(level))
+        print("\n{count} games at level '{level}'".
+            format(
+                count=recordList.getCount(),
+                level=level
+                )
+                )
         print("    mean = {}".format(recordList.getMean()))
         print("    top five scores:")
         for history in recordList.getRecords()[:5]:
             print("        {}".format(history))
+    print()
