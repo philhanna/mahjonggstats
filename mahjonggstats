@@ -3,6 +3,41 @@
 import os.path
 from datetime import *
 
+class HistoryList:
+    """ History records for this user
+    """
+    DEFAULT_FILENAME = os.path.expanduser('~/.local/share/gnome-mahjongg/history')
+
+    def __init__(self):
+        self.filename = HistoryList.DEFAULT_FILENAME
+        self.levels = {}
+        with open(self.filename, "rt") as f:
+            for line in f:
+                history = History(line)
+                level = history.level
+                recordList = self.getRecordList(level)
+                recordList.add(history)
+
+        for level in self.levels:
+            self.getRecordList(level).sort()
+
+    def getRecordList(self, level):
+        if level not in self.levels:
+            self.levels[level] = RecordList()
+        return self.levels[level]
+
+class RecordList:
+    """ A list of records at a particular level
+    """
+    def __init__(self):
+        self.records = []
+
+    def add(self, history):
+        self.records.append(history)
+
+    def sort(self):
+        self.records.sort(key=lambda history: history.seconds)
+
 class History:
     """ A single record in mahjongg history
 
@@ -26,26 +61,11 @@ class History:
         ss = seconds % 60
         return "{0:02d}:{1:02d}".format(mm, ss)
 
-    @staticmethod
-    def load(filename=os.path.expanduser('~/.local/share/gnome-mahjongg/history')):
-        """ Loads history records in descending seconds within level
-        """
-        output = {}
-        with open(filename, "rt") as f:
-            for line in f:
-                h = History(line)
-                if h.level not in output:
-                    output[h.level] = []
-                output[h.level].append(h)
-        for level in output:
-            output[level].sort(key=lambda x: x.seconds)
-        return output
-
 if __name__ == '__main__':
     
-    output = History.load()
-    for level in output:
-        print("For level '{level}':".format(level=level))
-        hList = output[level]
-        for h in hList[:5]:
-            print("\t{}".format(h))
+    historyList = HistoryList()
+    for level in historyList.levels:
+        print("Records in level '{}'".format(level))
+        recordList = historyList.getRecordList(level)
+        for history in recordList.records[:5]:
+            print("\t{}".format(history))
