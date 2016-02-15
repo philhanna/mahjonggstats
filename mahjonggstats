@@ -38,6 +38,9 @@ class RecordList:
     def sort(self):
         self.records.sort(key=lambda history: history.seconds)
 
+    def getRecords(self):
+        return self.records
+
 class History:
     """ A single record in mahjongg history
 
@@ -67,5 +70,5 @@ if __name__ == '__main__':
     for level in historyList.levels:
         print("Records in level '{}'".format(level))
         recordList = historyList.getRecordList(level)
-        for history in recordList.records[:5]:
+        for history in recordList.getRecords()[:5]:
             print("\t{}".format(history))
