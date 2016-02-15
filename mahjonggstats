@@ -1,0 +1,51 @@
+#! /usr/bin/python3
+
+import os.path
+from datetime import *
+
+class History:
+    """ A single record in mahjongg history
+
+        The file is located at ~/.local/share/gnome-mahjongg/history
+    """
+    def __init__(self, line):
+        tokens = line.split()
+        self.date = datetime.strptime(tokens[0], '%Y-%m-%dT%H:%M:%S%z')
+        self.level = tokens[1]
+        self.seconds = tokens[2]
+
+    def __str__(self):
+        return ("{date}: {time}".format(
+            date=self.date.strftime("%Y-%m-%d"),
+            time=self.secondsAsMMSS()
+        ))
+
+    def secondsAsMMSS(self):
+        seconds = int(self.seconds)
+        mm = seconds // 60
+        ss = seconds % 60
+        return "{0:02d}:{1:02d}".format(mm, ss)
+
+    @staticmethod
+    def load(filename=os.path.expanduser('~/.local/share/gnome-mahjongg/history')):
+        """ Loads history records in descending seconds within level
+        """
+        output = {}
+        with open(filename, "rt") as f:
+            for line in f:
+                h = History(line)
+                if h.level not in output:
+                    output[h.level] = []
+                output[h.level].append(h)
+        for level in output:
+            output[level].sort(key=lambda x: x.seconds)
+        return output
+
+if __name__ == '__main__':
+    
+    output = History.load()
+    for level in output:
+        print("For level '{level}':".format(level=level))
+        hList = output[level]
+        for h in hList[:5]:
+            print("\t{}".format(h))
