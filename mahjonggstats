@@ -61,8 +61,19 @@ class RecordList:
 
     def getMean(self):
         times = [h.seconds for h in self.records]
-        mean = statistics.mean(times)
-        return History.formatTime(mean)
+        return statistics.mean(times)
+
+    def getStandardDeviation(self):
+        times = [h.seconds for h in self.records]
+        return statistics.stdev(times)
+
+    def getConfidence95(self):
+        mean = self.getMean()
+        stdev = self.getStandardDeviation()
+        conf = 1.96 * stdev
+        lo = mean - conf
+        hi = mean + conf
+        return lo, hi
 
 class History:
     """ A single record in mahjongg history
@@ -111,7 +122,11 @@ if __name__ == '__main__':
                 level=level
                 )
                 )
-        print("    mean = {}".format(recordList.getMean()))
+        ft = History.formatTime
+        print("    mean     = {}".format(ft(recordList.getMean())))
+        print("    stdev    = {}".format(ft(recordList.getStandardDeviation())))
+        lo, hi = recordList.getConfidence95()
+        print("    95% conf = {} to {}".format(ft(lo), ft(hi)))
         print("    top five scores:")
         for history in recordList.getRecords()[:5]:
             print("        {}".format(history))
