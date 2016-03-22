@@ -65,7 +65,10 @@ class RecordList:
 
     def getStandardDeviation(self):
         times = [h.seconds for h in self.records]
-        return statistics.stdev(times)
+        if len(times) < 2:
+            return 0
+        else:
+            return statistics.stdev(times)
 
     def getConfidence95(self):
         mean = self.getMean()
