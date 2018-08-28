@@ -31,4 +31,3 @@ for level in level_names:
     for history in record_list.get_records()[:5]:
         print("        {}".format(history))
 print()
-git
