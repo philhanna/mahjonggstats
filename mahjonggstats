@@ -1,143 +1,33 @@
 #! /usr/bin/python3
 
-import os.path
-import statistics
-from datetime import *
+from history import History
+from history_list import HistoryList
 
+history_list = HistoryList()
 
-class HistoryList:
-    """ History records for this user
-    """
-    DEFAULT_FILENAME = os.path.expanduser('~/.local/share/gnome-mahjongg/history')
+print("\nMahjongg history of {count} games from {start} to {end}".format(
+    count=history_list.get_count(),
+    start=history_list.earliest_date.strftime("%m/%d/%Y"),
+    end=history_list.latest_date.strftime("%m/%d/%Y")
+))
 
-    def __init__(self):
-        self.filename = HistoryList.DEFAULT_FILENAME
-        self.levels = {}
-        self.earliest_date = None
-        self.latest_date = None
-        with open(self.filename, "rt") as f:
-            for line in f:
-                history = History(line)
-                if self.earliest_date is None or history.date < self.earliest_date:
-                    self.earliest_date = history.date
-                if self.latest_date is None or history.date > self.latest_date:
-                    self.latest_date = history.date
-                level = history.level
-                record_list = self.get_record_list(level)
-                record_list.add(history)
+level_names = [key for key in history_list.levels.keys()]
+level_names.sort(key=lambda name: history_list.get_record_list(name).get_count(), reverse=True)
 
-        self.count = 0
-        for level in self.levels:
-            record_list = self.get_record_list(level)
-            record_list.sort()
-            self.count += record_list.get_count()
-
-    def get_record_list(self, level):
-        if level not in self.levels:
-            self.levels[level] = RecordList()
-        return self.levels[level]
-
-    def get_count(self):
-        return self.count
-
-
-class RecordList:
-    """ A list of records at a particular level
-    """
-
-    def __init__(self):
-        self.records = []
-        self.count = 0
-
-    def add(self, history):
-        self.records.append(history)
-        self.count += 1
-
-    def sort(self):
-        self.records.sort(key=lambda history: history.seconds)
-
-    def get_records(self):
-        return self.records
-
-    def get_count(self):
-        return self.count
-
-    def get_mean(self):
-        times = [h.seconds for h in self.records]
-        return statistics.mean(times)
-
-    def get_standard_deviation(self):
-        times = [h.seconds for h in self.records]
-        if len(times) < 2:
-            return 0
-        else:
-            return statistics.stdev(times)
-
-    def get_95_confidence(self):
-        mean = self.get_mean()
-        stdev = self.get_standard_deviation()
-        conf = 1.96 * stdev
-        lo = max(0, mean - conf)
-        hi = mean + conf
-        return lo, hi
-
-
-class History:
-    """ A single record in mahjongg history
-
-        The file is located at ~/.local/share/gnome-mahjongg/history
-    """
-
-    @staticmethod
-    def format_time(seconds):
-        seconds = int(seconds)
-        mm = seconds // 60
-        ss = seconds % 60
-        return "{0:02d}:{1:02d}".format(mm, ss)
-
-    def __init__(self, line):
-        tokens = line.split()
-        self.date = datetime.strptime(tokens[0], '%Y-%m-%dT%H:%M:%S%z')
-        self.level = tokens[1]
-        self.seconds = int(tokens[2])
-
-    def __str__(self):
-        return ("{date}: {time}".format(
-            date=self.date.strftime("%m/%d/%Y"),
-            time=self.seconds_as_mmss()
-        ))
-
-    def seconds_as_mmss(self):
-        return History.format_time(self.seconds)
-
-
-if __name__ == '__main__':
-
-    history_list = HistoryList()
-
-    print("\nMahjongg history of {count} games from {start} to {end}".format(
-        count=history_list.get_count(),
-        start=history_list.earliest_date.strftime("%m/%d/%Y"),
-        end=history_list.latest_date.strftime("%m/%d/%Y")
-    ))
-
-    level_names = [key for key in history_list.levels.keys()]
-    level_names.sort(key=lambda name: history_list.get_record_list(name).get_count(), reverse=True)
-
-    for level in level_names:
-        record_list = history_list.get_record_list(level)
-        print("\n{count} games at level '{level}'".
-            format(
-            count=record_list.get_count(),
-            level=level
-        )
-        )
-        ft = History.format_time
-        print("    mean     = {}".format(ft(record_list.get_mean())))
-        print("    stdev    = {}".format(ft(record_list.get_standard_deviation())))
-        lo, hi = record_list.get_95_confidence()
-        print("    95% conf = {} to {}".format(ft(lo), ft(hi)))
-        print("    top five scores:")
-        for history in record_list.get_records()[:5]:
-            print("        {}".format(history))
-    print()
+for level in level_names:
+    record_list = history_list.get_record_list(level)
+    print("\n{count} games at level '{level}'".
+        format(
+        count=record_list.get_count(),
+        level=level
+    )
+    )
+    ft = History.format_time
+    print("    mean     = {}".format(ft(record_list.get_mean())))
+    print("    stdev    = {}".format(ft(record_list.get_standard_deviation())))
+    lo, hi = record_list.get_95_confidence()
+    print("    95% conf = {} to {}".format(ft(lo), ft(hi)))
+    print("    top five scores:")
+    for history in record_list.get_records()[:5]:
+        print("        {}".format(history))
+print()
