@@ -1,6 +1,6 @@
 import os
-from history import History
-from record_list import RecordList
+from mj.history import History
+from mj.record_list import RecordList
 
 
 class HistoryList:

@@ -1,7 +1,7 @@
 #! /usr/bin/python3
 
-from history import History
-from history_list import HistoryList
+from mj.history import History
+from mj.history_list import HistoryList
 
 history_list = HistoryList()
 
