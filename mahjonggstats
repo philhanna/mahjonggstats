@@ -4,6 +4,7 @@ import os.path
 import statistics
 from datetime import *
 
+
 class HistoryList:
     """ History records for this user
     """
@@ -12,36 +13,38 @@ class HistoryList:
     def __init__(self):
         self.filename = HistoryList.DEFAULT_FILENAME
         self.levels = {}
-        self.earliestDate = None
-        self.latestDate = None
+        self.earliest_date = None
+        self.latest_date = None
         with open(self.filename, "rt") as f:
             for line in f:
                 history = History(line)
-                if self.earliestDate == None or history.date < self.earliestDate:
-                    self.earliestDate = history.date
-                if self.latestDate == None or history.date > self.latestDate:
-                    self.latestDate = history.date
+                if self.earliest_date is None or history.date < self.earliest_date:
+                    self.earliest_date = history.date
+                if self.latest_date is None or history.date > self.latest_date:
+                    self.latest_date = history.date
                 level = history.level
-                recordList = self.getRecordList(level)
-                recordList.add(history)
+                record_list = self.get_record_list(level)
+                record_list.add(history)
 
         self.count = 0
         for level in self.levels:
-            recordList = self.getRecordList(level)
-            recordList.sort()
-            self.count += recordList.getCount()
+            record_list = self.get_record_list(level)
+            record_list.sort()
+            self.count += record_list.get_count()
 
-    def getRecordList(self, level):
+    def get_record_list(self, level):
         if level not in self.levels:
             self.levels[level] = RecordList()
         return self.levels[level]
 
-    def getCount(self):
+    def get_count(self):
         return self.count
+
 
 class RecordList:
     """ A list of records at a particular level
     """
+
     def __init__(self):
         self.records = []
         self.count = 0
@@ -53,30 +56,31 @@ class RecordList:
     def sort(self):
         self.records.sort(key=lambda history: history.seconds)
 
-    def getRecords(self):
+    def get_records(self):
         return self.records
 
-    def getCount(self):
+    def get_count(self):
         return self.count
 
-    def getMean(self):
+    def get_mean(self):
         times = [h.seconds for h in self.records]
         return statistics.mean(times)
 
-    def getStandardDeviation(self):
+    def get_standard_deviation(self):
         times = [h.seconds for h in self.records]
         if len(times) < 2:
             return 0
         else:
             return statistics.stdev(times)
 
-    def getConfidence95(self):
-        mean = self.getMean()
-        stdev = self.getStandardDeviation()
+    def get_95_confidence(self):
+        mean = self.get_mean()
+        stdev = self.get_standard_deviation()
         conf = 1.96 * stdev
         lo = max(0, mean - conf)
         hi = mean + conf
         return lo, hi
+
 
 class History:
     """ A single record in mahjongg history
@@ -85,7 +89,7 @@ class History:
     """
 
     @staticmethod
-    def formatTime(seconds):
+    def format_time(seconds):
         seconds = int(seconds)
         mm = seconds // 60
         ss = seconds % 60
@@ -100,37 +104,40 @@ class History:
     def __str__(self):
         return ("{date}: {time}".format(
             date=self.date.strftime("%m/%d/%Y"),
-            time=self.secondsAsMMSS()
+            time=self.seconds_as_mmss()
         ))
 
-    def secondsAsMMSS(self):
-        return History.formatTime(self.seconds)
+    def seconds_as_mmss(self):
+        return History.format_time(self.seconds)
+
 
 if __name__ == '__main__':
-    
-    historyList = HistoryList()
+
+    history_list = HistoryList()
 
     print("\nMahjongg history of {count} games from {start} to {end}".format(
-        count=historyList.getCount(),
-        start=historyList.earliestDate.strftime("%m/%d/%Y"),
-        end=historyList.latestDate.strftime("%m/%d/%Y")
-        ))
-    levelNames = [key for key in historyList.levels.keys()]
-    levelNames.sort(key=lambda name: historyList.getRecordList(name).getCount(), reverse=True)
-    for level in levelNames:
-        recordList = historyList.getRecordList(level)
+        count=history_list.get_count(),
+        start=history_list.earliest_date.strftime("%m/%d/%Y"),
+        end=history_list.latest_date.strftime("%m/%d/%Y")
+    ))
+
+    level_names = [key for key in history_list.levels.keys()]
+    level_names.sort(key=lambda name: history_list.get_record_list(name).get_count(), reverse=True)
+
+    for level in level_names:
+        record_list = history_list.get_record_list(level)
         print("\n{count} games at level '{level}'".
             format(
-                count=recordList.getCount(),
-                level=level
-                )
-                )
-        ft = History.formatTime
-        print("    mean     = {}".format(ft(recordList.getMean())))
-        print("    stdev    = {}".format(ft(recordList.getStandardDeviation())))
-        lo, hi = recordList.getConfidence95()
+            count=record_list.get_count(),
+            level=level
+        )
+        )
+        ft = History.format_time
+        print("    mean     = {}".format(ft(record_list.get_mean())))
+        print("    stdev    = {}".format(ft(record_list.get_standard_deviation())))
+        lo, hi = record_list.get_95_confidence()
         print("    95% conf = {} to {}".format(ft(lo), ft(hi)))
         print("    top five scores:")
-        for history in recordList.getRecords()[:5]:
+        for history in record_list.get_records()[:5]:
             print("        {}".format(history))
     print()
