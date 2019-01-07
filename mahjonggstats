@@ -3,31 +3,24 @@
 from mj.history import History
 from mj.history_list import HistoryList
 
-history_list = HistoryList()
+datefmt = "%m/%d/%Y"
 
-print("\nMahjongg history of {count} games from {start} to {end}".format(
-    count=history_list.get_count(),
-    start=history_list.earliest_date.strftime("%m/%d/%Y"),
-    end=history_list.latest_date.strftime("%m/%d/%Y")
-))
+hl = HistoryList()
+count = hl.get_count()
+start = hl.earliest_date.strftime(datefmt)
+end = hl.latest_date.strftime(datefmt)
 
-level_names = [key for key in history_list.levels.keys()]
-level_names.sort(key=lambda name: history_list.get_record_list(name).get_count(), reverse=True)
+print(f'\nMahjongg history of {count} games from {start} to {end}')
+
+level_names = [key for key in hl.levels.keys()]
+level_names.sort(key=lambda name: hl.get_record_list(name).get_mean(), reverse=False)
 
 for level in level_names:
-    record_list = history_list.get_record_list(level)
-    print("\n{count} games at level '{level}'".
-        format(
-        count=record_list.get_count(),
-        level=level
-    )
-    )
-    ft = History.format_time
-    print("    mean     = {}".format(ft(record_list.get_mean())))
-    print("    stdev    = {}".format(ft(record_list.get_standard_deviation())))
-    lo, hi = record_list.get_95_confidence()
-    print("    95% conf = {} to {}".format(ft(lo), ft(hi)))
-    print("    top five scores:")
-    for history in record_list.get_records()[:5]:
-        print("        {}".format(history))
+    rl = hl.get_record_list(level)
+    print(f'\n{rl.get_count()} games at level "{level}"')
+    print(f'    μ, σ = {History.format_time(rl.get_mean())}, {History.format_time(rl.get_standard_deviation())}', end='')
+    lo, hi = rl.get_95_confidence()
+    print(f'    95% conf = {History.format_time(lo)} to {History.format_time(hi)}')
+    top5 = rl.get_records()[:5]
+    print(f'    top five scores: {", ".join([h.timedate() for h in top5])}')
 print()
