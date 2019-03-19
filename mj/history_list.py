@@ -8,8 +8,8 @@ class HistoryList:
     """
     DEFAULT_FILENAME = os.path.expanduser('~/.local/share/gnome-mahjongg/history')
 
-    def __init__(self):
-        self.filename = HistoryList.DEFAULT_FILENAME
+    def __init__(self, filename=DEFAULT_FILENAME):
+        self.filename = filename
         self.levels = {}
         self.earliest_date = None
         self.latest_date = None
