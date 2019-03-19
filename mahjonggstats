@@ -4,7 +4,7 @@ from mj.history import History
 from mj.history_list import HistoryList
 
 
-def main(name=None, levels=None):
+def main(name=None, levels=None, quiet=None):
     datefmt = "%m/%d/%Y"
 
     hl = HistoryList()
@@ -18,7 +18,8 @@ def main(name=None, levels=None):
             exit(-1)
         level_names = [name]
     else:
-        print(f'\nMahjongg history of {count} games from {start} to {end}')
+        if not levels:
+            print(f'\nMahjongg history of {count} games from {start} to {end}')
         level_names = [key for key in hl.levels.keys()]
         level_names.sort(key=lambda name: hl.get_record_list(name).get_mean(), reverse=False)
 
@@ -27,15 +28,27 @@ def main(name=None, levels=None):
             print(level)
         return
 
+    if quiet:
+        maxprefix = 0
+        for level in level_names:
+            rl = hl.get_record_list(level)
+            prefix = f'{rl.get_count()} games at level "{level}"'
+            if len(prefix) > maxprefix:
+                maxprefix = len(prefix)
+
     for level in level_names:
         rl = hl.get_record_list(level)
-        print(f'\n{rl.get_count()} games at level "{level}"')
-        print(f'    μ, σ = {History.format_time(rl.get_mean())}, {History.format_time(rl.get_standard_deviation())}',
-              end='')
-        lo, hi = rl.get_95_confidence()
-        print(f'    95% conf = {History.format_time(lo)} to {History.format_time(hi)}')
-        top5 = rl.get_records()[:5]
-        print(f'    top five scores: {", ".join([h.timedate() for h in top5])}')
+        if quiet:
+            prefix = f'{rl.get_count()} games at level "{level}"'
+            print(f'{prefix:{maxprefix}} average={History.format_time(rl.get_mean())}')
+        else:
+            print(f'\n{rl.get_count()} games at level "{level}"')
+            print(f'    μ, σ = {History.format_time(rl.get_mean())}, {History.format_time(rl.get_standard_deviation())}',
+                  end='')
+            lo, hi = rl.get_95_confidence()
+            print(f'    95% conf = {History.format_time(lo)} to {History.format_time(hi)}')
+            top5 = rl.get_records()[:5]
+            print(f'    top five scores: {", ".join([h.timedate() for h in top5])}')
     print()
 
 
@@ -49,5 +62,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='mahjonggstats')
     parser.add_argument('--name', '-n', help='select only this level name')
     parser.add_argument('--levels', '-l', action='store_true', help='show level names')
+    parser.add_argument('--quiet', '-q', action='store_true', help='show names and averages only')
     args = parser.parse_args()
-    main(args.name, args.levels)
+    main(args.name, args.levels, args.quiet)
