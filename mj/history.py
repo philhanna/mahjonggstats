@@ -26,10 +26,7 @@ class History:
         self.seconds = int(tokens[2])
 
     def __str__(self):
-        return ("{date}: {time}".format(
-            date=self.date.strftime("%m/%d/%Y"),
-            time=self.seconds_as_mmss()
-        ))
+        return f"{self.date.strftime('%m/%d/%Y')}: {self.seconds_as_mmss()}"
 
     def timedate(self):
         return ("{time} ({date})".format(
