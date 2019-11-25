@@ -12,7 +12,12 @@ class History:
         seconds = int(seconds)
         mm = seconds // 60
         ss = seconds % 60
-        return "{0:d}:{1:02d}".format(mm, ss)
+        time_string = f"{mm:02d}:{ss:02d}"
+        if mm >= 60:
+            hh = mm // 60
+            mm = mm % 60
+            time_string = f"{hh:02d}:{mm:02d}:{ss:02d}"
+        return time_string
 
     def __init__(self, line):
         tokens = line.split()
