@@ -3,7 +3,7 @@ from unittest import TestCase
 from mj.history import History
 
 
-class TestHistory(TestCase):
+class TestHistoryFormatTime(TestCase):
 
     def test_hour_plus(self):
         seconds = 3603
