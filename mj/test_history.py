@@ -30,7 +30,7 @@ class TestHistory(TestCase):
         self.assertEqual(expected, actual)
 
     def test_all_day(self):
-        seconds = 60*60*24 - 1
+        seconds = 60 * 60 * 24 - 1
         expected = "23:59:59"
         actual = History.format_time(seconds)
         self.assertEqual(expected, actual)
