@@ -29,10 +29,7 @@ class History:
         return f"{self.date.strftime('%m/%d/%Y')}: {self.seconds_as_mmss()}"
 
     def timedate(self):
-        return ("{time} ({date})".format(
-            date=self.date.strftime("%m/%d/%Y"),
-            time=self.seconds_as_mmss()
-        ))
+        return f"{self.seconds_as_mmss()} ({self.date.strftime('%m/%d/%Y')})"
 
     def seconds_as_mmss(self):
         return History.format_time(self.seconds)
