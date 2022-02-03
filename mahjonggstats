@@ -8,6 +8,9 @@ def main(name=None, levels=None, quiet=None):
     datefmt = "%m/%d/%Y"
 
     hl = HistoryList()
+    if not hl:
+        print(f'No mahjongg history yet')
+        return
     count = hl.get_count()
     start = hl.earliest_date.strftime(datefmt)
     end = hl.latest_date.strftime(datefmt)
