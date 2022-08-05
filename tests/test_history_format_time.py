@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from mj.history import History
+from mj import History
 
 
 class TestHistoryFormatTime(TestCase):
