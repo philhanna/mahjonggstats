@@ -1,3 +1,4 @@
+Repository: [https://github.com/philhanna/mahjonggstats](https://github.com/philhanna/mahjonggstats)
 # mahjonggstats
 Python program to display statistics from Ubuntu mahjongg
 
