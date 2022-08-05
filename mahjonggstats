@@ -31,8 +31,8 @@ def main(name=None, levels=None, quiet=None):
             print(level)
         return
 
+    maxprefix = 0
     if quiet:
-        maxprefix = 0
         for level in level_names:
             rl = hl.get_record_list(level)
             prefix = f'{rl.get_count()} games at level "{level}"'
