@@ -16,7 +16,7 @@ def main(name=None, levels=None, quiet=None):
     end = hl.latest_date.strftime(datefmt)
 
     if name:
-        if not name in hl.levels.keys():
+        if name not in hl.levels.keys():
             print(f'Level {name} not found')
             exit(-1)
         level_names = [name]
