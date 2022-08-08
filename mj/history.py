@@ -8,7 +8,7 @@ class History:
     """
 
     @staticmethod
-    def format_time(seconds):
+    def format_time(seconds) -> str:
         seconds = int(seconds)
         mm = seconds // 60
         ss = seconds % 60
@@ -21,15 +21,21 @@ class History:
 
     def __init__(self, line):
         tokens = line.split()
-        self.date = datetime.strptime(tokens[0], '%Y-%m-%dT%H:%M:%S%z')
-        self.level = tokens[1]
-        self.seconds = int(tokens[2])
+        self.date: datetime = datetime.strptime(tokens[0], '%Y-%m-%dT%H:%M:%S%z')
+        self.level: str = tokens[1]
+        self.seconds: int = int(tokens[2])
 
     def __str__(self):
-        return f"{self.date.strftime('%m/%d/%Y')}: {self.seconds_as_mmss()}"
+        tokens = (
+            self.date.strftime("%m/%d/%Y"),
+            self.level,
+            self.seconds_as_mmss()
+        )
+        output = " ".join(tokens)
+        return output
 
-    def timedate(self):
+    def timedate(self) -> str:
         return f"{self.seconds_as_mmss()} ({self.date.strftime('%m/%d/%Y')})"
 
-    def seconds_as_mmss(self):
+    def seconds_as_mmss(self) -> str:
         return History.format_time(self.seconds)

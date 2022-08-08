@@ -1,17 +1,19 @@
 #! /usr/bin/python3
+from datetime import datetime
+
 from mj import HistoryList, History
 
 
 def main(name: str = None, levels: bool = None, quiet: bool = None):
-    datefmt = "%m/%d/%Y"
+    datefmt: str = "%m/%d/%Y"
 
-    hl = HistoryList()
+    hl: HistoryList  = HistoryList()
     if not hl:
         print(f'No mahjongg history yet')
         return
-    count = hl.get_count()
-    start = hl.earliest_date.strftime(datefmt)
-    end = hl.latest_date.strftime(datefmt)
+    count: int = hl.get_count()
+    start: datetime.date = hl.earliest_date.strftime(datefmt)
+    end: datetime.date = hl.latest_date.strftime(datefmt)
 
     if name:
         if name not in hl.levels.keys():
