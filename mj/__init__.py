@@ -1,9 +1,15 @@
+import os.path
+
+DEFAULT_FILENAME: str = os.path.expanduser('~/.local/share/gnome-mahjongg/history')
+from .history_line import HistoryLine
+from .level_history import LevelHistory
 from .history import History
-from .record_list import RecordList
-from .history_list import HistoryList
+from .main import Main
 
 __all__ = [
-    'RecordList',
+    'DEFAULT_FILENAME',
+    'HistoryLine',
+    'LevelHistory',
     'History',
-    'HistoryList',
+    'Main',
 ]

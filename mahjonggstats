@@ -1,70 +1,18 @@
 #! /usr/bin/python3
-from datetime import datetime
+from mj import History, HistoryLine, main, Main
 
-from mj import HistoryList, History
+import argparse
 
+parser = argparse.ArgumentParser(description='mahjonggstats')
+parser.add_argument('--name', '-n', help='select only this level name')
+parser.add_argument('--level-names-only', '-l', action='store_true', help='show level names only')
+parser.add_argument('--quiet', '-q', action='store_true', help='show level names and averages only')
+kwargs = vars(parser.parse_args())
 
-def main(name: str = None, levels: bool = None, quiet: bool = None):
-    datefmt: str = "%m/%d/%Y"
-
-    hl: HistoryList  = HistoryList()
-    if not hl:
-        print(f'No mahjongg history yet')
-        return
-    count: int = hl.get_count()
-    start: datetime.date = hl.earliest_date.strftime(datefmt)
-    end: datetime.date = hl.latest_date.strftime(datefmt)
-
-    if name:
-        if name not in hl.levels.keys():
-            print(f'Level {name} not found')
-            exit(-1)
-        level_names = [name]
-    else:
-        if not levels:
-            print(f'\nMahjongg history of {count} games from {start} to {end}')
-        level_names = [key for key in hl.levels.keys()]
-        level_names.sort(key=lambda name: hl.get_record_list(name).get_mean(), reverse=False)
-
-    if levels:
-        for level in sorted(level_names):
-            print(level)
-        return
-
-    maxprefix = 0
-    if quiet:
-        for level in level_names:
-            rl = hl.get_record_list(level)
-            prefix = f'{rl.get_count()} games at level "{level}"'
-            if len(prefix) > maxprefix:
-                maxprefix = len(prefix)
-
-    for level in level_names:
-        rl = hl.get_record_list(level)
-        if quiet:
-            prefix = f'{rl.get_count()} games at level "{level}"'
-            print(f'{prefix:{maxprefix}} average={History.format_time(rl.get_mean())}')
-        else:
-            print(f'\n{rl.get_count()} games at level "{level}"')
-            print(f'    μ, σ = {History.format_time(rl.get_mean())}, {History.format_time(rl.get_standard_deviation())}',
-                  end='')
-            lo, hi = rl.get_95_confidence()
-            print(f'    95% conf = {History.format_time(lo)} to {History.format_time(hi)}')
-            top5 = rl.get_records()[:5]
-            print(f'    top five scores: {", ".join([h.timedate() for h in top5])}')
-    print()
-
-
-#   ============================================================
-#   Mainline
-#   ============================================================
-
-if __name__ == '__main__':
-    import argparse
-
-    parser = argparse.ArgumentParser(description='mahjonggstats')
-    parser.add_argument('--name', '-n', help='select only this level name')
-    parser.add_argument('--levels', '-l', action='store_true', help='show level names')
-    parser.add_argument('--quiet', '-q', action='store_true', help='show names and averages only')
-    args = parser.parse_args()
-    main(args.name, args.levels, args.quiet)
+try:
+    main = Main(**kwargs)
+    main.run()
+except ValueError as ex:
+    print(ex)
+except RuntimeError as ex:
+    print(ex)
