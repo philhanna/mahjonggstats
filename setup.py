@@ -2,11 +2,11 @@ from setuptools import setup
 
 setup(
     name='mahjonggstats',
-    version='1.2.2',
+    version='2.0.0',
     packages=['mj'],
-    url='',
-    license='',
+    url='https://github.com/philhanna/mahjonggstats',
+    license='MIT license',
     author='Phil Hanna',
     author_email='ph1204@gmail.com',
-    description='Statistics for the GNU mahjongg game'
+    description='Statistics for the Gnome mahjongg game'
 )
