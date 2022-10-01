@@ -1,3 +1,4 @@
+from functools import cache
 from statistics import mean, stdev
 from typing import Tuple
 
@@ -45,12 +46,14 @@ class LevelHistory:
         return len(self._records)
 
     @property
+    @cache
     def mean(self) -> float:
         """Returns the mean of the time values for all records"""
         times = [h.seconds for h in self.records]
         return mean(times)
 
     @property
+    @cache
     def standard_deviation(self) -> float:
         """Returns the standard deviation of the time values for all records"""
         times = [h.seconds for h in self.records]
@@ -59,6 +62,7 @@ class LevelHistory:
         return stdev(times)
 
     @property
+    @cache
     def confidence(self) -> Tuple[float, float]:
         """Returns the low and high estimates at a 95% confidence level"""
         mean = self.mean
