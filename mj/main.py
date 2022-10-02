@@ -44,7 +44,7 @@ class Main:
 
     def run(self):
         """Runs the mainline"""
-        level_names = sorted(self.get_level_names())
+        level_names = self.get_level_names()
 
         # If the level names only option was specified,
         # just print the level names and return
@@ -115,12 +115,12 @@ class Main:
         return count, start, end
 
     def get_level_names(self):
-        """Returns the list of levels names in history"""
+        """Returns the list of levels names in history, sorted by mean seconds"""
         level_name = self.level_name
         if level_name is not None:
             if level_name not in self.history.levels.keys():
                 raise ValueError(f'Level {level_name} not found')
             level_names = [level_name]
         else:
-            level_names = sorted(self.history.level_names)
+            level_names = self.history.level_names
         return level_names

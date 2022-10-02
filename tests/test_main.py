@@ -32,8 +32,8 @@ class TestMain(TestCase):
     def test_get_level_names(self):
         expected = [
             "difficult",
+            "ziggurat",
             "easy",
-            "ziggurat"
         ]
         actual = self.main.get_level_names()
         self.assertListEqual(expected, actual)
@@ -52,7 +52,7 @@ class TestMain(TestCase):
 
     def test_print_summary_all(self):
         with StringIO() as out, stdout_redirected(out):
-            self.main.print_summary(["difficult", "easy", "ziggurat"])
+            self.main.print_summary(["difficult", "ziggurat", "easy"])
             output = out.getvalue()
         self.assertEqual(2, output.count("1 game"))
         self.assertEqual(1, output.count("4 games"))
