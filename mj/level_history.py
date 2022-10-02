@@ -15,16 +15,6 @@ class LevelHistory:
         self._records: list[HistoryLine] = records
 
     def __repr__(self):
-        output = "LevelHistory("
-        output += self.level_name
-        output += ", "
-        output += "["
-        records = [repr(history_line) for history_line in self.records]
-        rstring = ",".join(records)
-        output += rstring
-        output += "]"
-        output += ")"
-
         output = (
             f'{__class__.__name__}('
             f'"{self.level_name}"'

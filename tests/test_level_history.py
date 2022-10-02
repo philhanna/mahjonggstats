@@ -29,3 +29,14 @@ class TestLevelHistory(TestCase):
         lo, hi = lh.confidence
         actual = (int(lo), int(hi))
         self.assertTupleEqual(expected, actual)
+
+    def test_repr(self):
+        expected = (
+            'LevelHistory("easy",['
+            'HistoryLine("2022-07-31T01:51:05-0400 easy 308"),'
+            'HistoryLine("2022-08-04T22:27:39-0400 easy 243"),'
+            'HistoryLine("2022-08-06T23:02:17-0400 easy 171"),'
+            'HistoryLine("2022-08-06T23:07:24-0400 easy 294")])'
+        )
+        actual = repr(self.history.get_level_history("easy"))
+        self.assertEqual(expected, actual)
