@@ -44,7 +44,7 @@ class Main:
 
     def run(self):
         """Runs the mainline"""
-        level_names = sorted(self.get_level_names())
+        level_names = self.get_level_names()
 
         # If the level names only option was specified,
         # just print the level names and return
@@ -122,5 +122,6 @@ class Main:
                 raise ValueError(f'Level {level_name} not found')
             level_names = [level_name]
         else:
-            level_names = sorted(self.history.level_names)
+            level_names = sorted(self.history.level_names,
+                                 key=lambda x: self.history.get_level_history(x).mean)
         return level_names
