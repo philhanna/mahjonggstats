@@ -1,8 +1,8 @@
 from io import StringIO
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, PropertyMock
 
-from mj import History, Main
+from mj import History, Main, LevelHistory, HistoryLine
 from tests import testdata, stdout_redirected
 
 
@@ -10,7 +10,7 @@ class TestMain(TestCase):
     """Unit tests for the mainline"""
 
     def setUp(self):
-        with patch.object(History, "load", return_value=testdata.split("\n")):
+        with patch.object(History, "load", return_value=testdata.splitlines()):
             self.main = Main()
 
     def test_get_history(self):
@@ -56,3 +56,46 @@ class TestMain(TestCase):
             output = out.getvalue()
         self.assertEqual(2, output.count("1 game"))
         self.assertEqual(1, output.count("4 games"))
+
+    def test_run(self):
+        with StringIO() as out, stdout_redirected(out):
+            self.main.run()
+            output = out.getvalue()
+        self.assertEqual(2, output.count("1 game"))
+        self.assertEqual(1, output.count("4 games"))
+
+    def test_run_quiet(self):
+        with StringIO() as out, stdout_redirected(out):
+            with patch.object(History, "load", return_value=testdata.splitlines()):
+                kwargs = {
+                    "quiet": True
+                }
+                main = Main(**kwargs)
+                main.run()
+                output = out.getvalue()
+        nlines = len(output.splitlines())
+        self.assertEqual(3, nlines)
+        self.assertEqual(2, output.count("1 game"))
+        self.assertEqual(1, output.count("4 games"))
+
+    def test_run_level_names_only(self):
+        with StringIO() as out, stdout_redirected(out):
+            with patch.object(History, "load", return_value=testdata.splitlines()):
+                kwargs = {
+                    "level_names_only": True
+                }
+                main = Main(**kwargs)
+                main.run()
+                output = out.getvalue()
+        expected = ['difficult', 'ziggurat', 'easy']
+        actual = output.splitlines()
+        self.assertListEqual(expected, actual)
+
+    def test_run_bogus_level_names(self):
+        with self.assertRaises(ValueError) as ex:
+            with patch.object(History, "load", return_value=testdata.splitlines()):
+                main = Main(**{'name': 'bogus'})
+                main.run()
+        expected = "Level bogus not found"
+        actual = str(ex.exception)
+        self.assertEqual(expected, actual)
