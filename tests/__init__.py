@@ -13,6 +13,7 @@ testdata = """\
 2022-08-06T23:02:17-0400 easy 171
 2022-08-06T23:07:24-0400 easy 294"""
 
+
 # redirect stdout technique from https://www.python.org/dev/peps/pep-0343/
 
 @contextmanager

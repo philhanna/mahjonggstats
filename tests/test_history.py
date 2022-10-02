@@ -27,3 +27,8 @@ class TestHistory(TestCase):
         expected = 6
         actual = len(self.hl.records)
         self.assertEqual(expected, actual)
+
+    def test_level_names(self):
+        expected = ["difficult", "ziggurat", "easy"]
+        actual = self.hl.level_names
+        self.assertListEqual(expected, actual)
