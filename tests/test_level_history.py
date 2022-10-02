@@ -1,7 +1,7 @@
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, PropertyMock
 
-from mj import History
+from mj import History, LevelHistory
 from tests import testdata
 
 
@@ -23,6 +23,14 @@ class TestLevelHistory(TestCase):
         actual = lh.standard_deviation
         self.assertAlmostEqual(expected, actual)
 
+    def test_standard_deviation_short(self):
+        with patch.object(History, "load", return_value=["2022-07-31T01:51:05-0400 easy 308"]):
+            history = History()
+            lh = history.get_level_history("easy")
+            expected = 0
+            actual = lh.standard_deviation
+            self.assertEqual(expected, actual)
+
     def test_confidence(self):
         lh = self.history.get_level_history("easy")
         expected = (132, 375)
@@ -40,3 +48,14 @@ class TestLevelHistory(TestCase):
         )
         actual = repr(self.history.get_level_history("easy"))
         self.assertEqual(expected, actual)
+
+    def test_confidence_when_stdev_is_huge(self):
+        with patch.object(LevelHistory, 'standard_deviation', new_callable=PropertyMock) as mock_stndev:
+            mock_stndev.return_value = 1000.0
+            history = self.history
+            lh = history.get_level_history("easy")
+            lo, hi = lh.confidence
+            expected = 0
+            actual = lo
+            self.assertEqual(expected, actual)
+
