@@ -29,6 +29,7 @@ class TestHistory(TestCase):
         self.assertEqual(expected, actual)
 
     def test_level_names(self):
+        # The level names are sorted by the mean time in seconds of each
         expected = ["difficult", "ziggurat", "easy"]
         actual = self.hl.level_names
         self.assertListEqual(expected, actual)

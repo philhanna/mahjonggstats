@@ -46,7 +46,9 @@ class History:
     @property
     @cache
     def level_names(self) -> list[str]:
-        """Returns the list of all distinct level names in this history"""
+        """Returns the list of all distinct level names in this history.
+        The list is sorted in ascending order of the mean game time
+        of each level."""
         level_names = sorted([k for k in self.levels.keys()],
                              key=lambda x: self.get_level_history(x).mean)
         return level_names

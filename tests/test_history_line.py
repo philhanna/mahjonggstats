@@ -55,3 +55,10 @@ class TestHistoryLine(TestCase):
         expected = "23:59:59"
         actual = HistoryLine.format_time(seconds)
         self.assertEqual(expected, actual)
+
+    def test_repr(self):
+        line = "2019-11-25T12:21:58-0500 cloud 3603"
+        history = HistoryLine(line)
+        expected = f'HistoryLine("{line}")'
+        actual = repr(history)
+        self.assertEqual(expected, actual)
