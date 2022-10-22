@@ -1,20 +1,4 @@
-from datetime import datetime
-
 from mj import History, HistoryLine
-
-
-def get_date_format() -> str:
-    """Returns the preferred date format string"""
-    datefmt: str = "%m/%d/%Y"
-    return datefmt
-
-
-def get_history() -> History:
-    """Returns the mahjongg history"""
-    history: History = History()
-    if len(history.records) == 0:
-        raise RuntimeError(f'No mahjongg history yet')
-    return history
 
 
 class Main:
@@ -24,7 +8,7 @@ class Main:
         self._level_name: str = kwargs.get("name", None)
         self._level_names_only: bool = kwargs.get("level_names_only", False)
         self._quiet: bool = kwargs.get("quiet", False)
-        self._history: History = get_history()
+        self._history: History = Main.get_history()
 
     @property
     def level_name(self) -> str:
@@ -110,8 +94,8 @@ class Main:
     def get_game_data(self) -> tuple[int, str, str]:
         """Prints the heading for the number of games"""
         count = len(self.history.records)
-        start = self.history.earliest_date.strftime(get_date_format())
-        end = self.history.latest_date.strftime(get_date_format())
+        start = self.history.earliest_date.strftime(Main.get_date_format())
+        end = self.history.latest_date.strftime(Main.get_date_format())
         return count, start, end
 
     def get_level_names(self):
@@ -124,3 +108,17 @@ class Main:
         else:
             level_names = self.history.level_names
         return level_names
+
+    @staticmethod
+    def get_date_format() -> str:
+        """Returns the preferred date format string"""
+        datefmt: str = "%m/%d/%Y"
+        return datefmt
+
+    @staticmethod
+    def get_history() -> History:
+        """Returns the mahjongg history"""
+        history: History = History()
+        if len(history.records) == 0:
+            raise RuntimeError(f'No mahjongg history yet')
+        return history
