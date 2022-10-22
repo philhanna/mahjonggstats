@@ -1,7 +1,7 @@
 #! /usr/bin/python3
-from mj import History, HistoryLine, main, Main
-
 import argparse
+
+from mj import Main
 
 parser = argparse.ArgumentParser(description='mahjonggstats')
 parser.add_argument('--name', '-n', help='select only this level name')
