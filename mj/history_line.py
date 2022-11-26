@@ -14,6 +14,9 @@ class HistoryLine:
         self._level_name: str = tokens[1]
         self._seconds: int = int(tokens[2])
 
+    def __eq__(self, other):
+        return str(self) == str(other)
+
     @staticmethod
     def format_time(seconds) -> str:
         """Creates a string with hh:mm:ss from the specified number of seconds"""

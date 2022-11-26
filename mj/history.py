@@ -22,20 +22,15 @@ class History:
         }
 
     @property
-    def records(self) -> list[HistoryLine]:
-        """Returns the list of all HistoryLine records"""
-        return self._records
-
-    @property
-    def levels(self) -> dict[str, LevelHistory]:
-        """Returns a map of level names to LevelHistory for that level"""
-        return self._levels
-
-    @property
     @cache
     def earliest_date(self):
         return min([history_record.game_date
                     for history_record in self.records])
+
+    @cache
+    def get_level_history(self, level_name: str) -> LevelHistory:
+        """Returns the records for a specified level name"""
+        return self.levels.get(level_name, LevelHistory(level_name, []))
 
     @property
     @cache
@@ -53,10 +48,10 @@ class History:
                              key=lambda x: self.get_level_history(x).mean)
         return level_names
 
-    @cache
-    def get_level_history(self, level_name: str) -> LevelHistory:
-        """Returns the records for a specified level name"""
-        return self.levels.get(level_name, LevelHistory(level_name, []))
+    @property
+    def levels(self) -> dict[str, LevelHistory]:
+        """Returns a map of level names to LevelHistory for that level"""
+        return self._levels
 
     @staticmethod
     def load() -> list[str]:
@@ -67,3 +62,8 @@ class History:
         """
         with open(DEFAULT_FILENAME) as fp:
             return [line for line in fp]
+
+    @property
+    def records(self) -> list[HistoryLine]:
+        """Returns the list of all HistoryLine records"""
+        return self._records

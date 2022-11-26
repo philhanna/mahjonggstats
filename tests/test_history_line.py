@@ -5,6 +5,11 @@ from mj import HistoryLine
 
 class TestHistoryLine:
 
+    def test_eq(self):
+        a = HistoryLine("2022-07-31T01:51:05-0400 easy 308")
+        b = HistoryLine("2022-07-31T01:51:05-0400 easy " + str(300 + 8))
+        assert a == b
+
     def test_format_time_all_day(self):
         seconds = 60 * 60 * 24 - 1
         assert HistoryLine.format_time(seconds) == "23:59:59"
@@ -29,7 +34,7 @@ class TestHistoryLine:
         line = "2019-11-30T20:05:00-0500 Normal 234"
         h = HistoryLine(line)
         assert h.game_date.date() == date(2019, 11, 30)
-        assert h.game_date.time() == time(20,5,0)
+        assert h.game_date.time() == time(20, 5, 0)
 
     def test_repr(self):
         line = "2019-11-25T12:21:58-0500 cloud 3603"
