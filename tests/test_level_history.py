@@ -1,20 +1,18 @@
 import pytest
 
 from mj import HistoryLine, LevelHistory
-
-testdata = """\
-2022-07-31T01:51:05-0400 easy 308
-2022-08-04T22:27:39-0400 easy 243
-2022-08-06T23:02:17-0400 easy 171
-2022-08-06T23:07:24-0400 easy 294\
-"""
-
-record_list = [HistoryLine(line) for line in testdata.splitlines()]
+from tests import testdata
 
 
 class TestLevelHistory:
 
     def setup_method(self):
+        record_list = [
+            hl
+            for hl in [HistoryLine(line)
+                       for line in testdata.splitlines()]
+            if hl.level_name == 'easy'
+        ]
         self.lh = LevelHistory("easy", record_list)
 
     def teardown_method(self):
@@ -30,7 +28,7 @@ class TestLevelHistory:
             HistoryLine("2022-08-06T23:02:17-0400 easy 171"),
             HistoryLine("2022-08-06T23:07:24-0400 easy 294"),
         ]
-        actual = self.lh.records
+        actual = [x for x in self.lh.records if x.level_name == 'easy']
         assert actual == expected
 
     def test_count(self):
