@@ -59,7 +59,7 @@ class Main:
             mean_string = HistoryLine.format_time(mean)
             stndev_string = HistoryLine.format_time(stndev)
             lo_string = HistoryLine.format_time(lo)
-            hi_string = HistoryLine.format_time(lo)
+            hi_string = HistoryLine.format_time(hi)
             count_string = "game" if count == 1 else "games"
 
             print()
@@ -112,7 +112,7 @@ class Main:
     @staticmethod
     def get_date_format() -> str:
         """Returns the preferred date format string"""
-        datefmt: str = "%m/%d/%Y"
+        datefmt: str = "%Y-%m-%d"
         return datefmt
 
     @staticmethod
@@ -122,3 +122,5 @@ class Main:
         if len(history.records) == 0:
             raise RuntimeError(f'No mahjongg history yet')
         return history
+
+
