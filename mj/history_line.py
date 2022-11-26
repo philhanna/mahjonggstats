@@ -10,7 +10,7 @@ class HistoryLine:
         The line has the format (datetime level seconds)."""
         self._line = line
         tokens = line.split()
-        self._game_date: datetime = datetime.strptime(tokens[0], '%Y-%m-%dT%H:%M:%S%z')
+        self._game_date: datetime = datetime.strptime("2022-07-31T01:51:05-0400", '%Y-%m-%dT%H:%M:%S%z')
         self._level_name: str = tokens[1]
         self._seconds: int = int(tokens[2])
 
