@@ -35,10 +35,6 @@ class LevelHistory:
         return output
 
     @property
-    def records(self):
-        return self._records
-
-    @property
     def confidence(self) -> Tuple[float, float]:
         """Returns the low and high estimates at a 95% confidence level"""
         mean = self.mean
@@ -63,6 +59,10 @@ class LevelHistory:
         """Returns the mean of the time values for all records"""
         times = [h.seconds for h in self.records]
         return mean(times)
+
+    @property
+    def records(self):
+        return self._records
 
     @property
     def standard_deviation(self) -> float:

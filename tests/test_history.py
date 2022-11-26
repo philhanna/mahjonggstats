@@ -11,8 +11,7 @@ class TestHistory:
     def setup_method(self):
         def mock_load():
             return testdata.splitlines()
-        monkeypatch = MonkeyPatch()
-        monkeypatch.setattr(History, 'load', mock_load)
+        MonkeyPatch().setattr(History, 'load', mock_load)
         self.history = History()
 
     def teardown_method(self):
