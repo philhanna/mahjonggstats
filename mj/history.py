@@ -1,5 +1,3 @@
-from functools import cache
-
 from mj import HistoryLine, DEFAULT_FILENAME, LevelHistory
 
 
@@ -22,24 +20,20 @@ class History:
         }
 
     @property
-    @cache
     def earliest_date(self):
         return min([history_record.game_date
                     for history_record in self.records])
 
-    @cache
     def get_level_history(self, level_name: str) -> LevelHistory:
         """Returns the records for a specified level name"""
         return self.levels.get(level_name, LevelHistory(level_name, []))
 
     @property
-    @cache
     def latest_date(self):
         return max([history_record.game_date
                     for history_record in self.records])
 
     @property
-    @cache
     def level_names(self) -> list[str]:
         """Returns the list of all distinct level names in this history.
         The list is sorted in ascending order of the mean game time
