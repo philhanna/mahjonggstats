@@ -1,5 +1,6 @@
-from datetime import datetime, date
+from datetime import datetime
 
+import pytest
 from pytest import MonkeyPatch
 
 from mj import History, HistoryLine, LevelHistory
@@ -10,6 +11,7 @@ def test_ordinary_load():
     history = History()
     assert len(history.records) > 4
     del history
+
 
 class TestHistory:
 
@@ -27,7 +29,8 @@ class TestHistory:
         actual_date = self.history.earliest_date
         assert actual_date == expected_date
 
-    def help_test_level_names(self, level_name):
+    @pytest.mark.parametrize("level_name", ["easy", "difficult", "bogus"])
+    def test_level_names(self, level_name):
         actual = self.history.get_level_history(level_name).records
         expected = [
             hl for hl in [HistoryLine(x) for x in testdata.splitlines()]
@@ -35,21 +38,12 @@ class TestHistory:
         ]
         assert actual == expected
 
-    def test_get_level_history_easy(self):
-        self.help_test_level_names("easy")
-
-    def test_get_level_history_difficult(self):
-        self.help_test_level_names("difficult")
-
-    def test_get_level_history_bogus(self):
-        self.help_test_level_names("bogus")
-
     def test_latest_date(self):
         expected_date = datetime.strptime("2022-08-06T23:07:24-0400", '%Y-%m-%dT%H:%M:%S%z')
         actual_date = self.history.latest_date
         assert actual_date == expected_date
 
-    def test_level_names(self):
+    def test_names(self):
         # Note: the list of level names is sorted by the mean solution time of each level
         assert self.history.level_names == ['difficult', 'ziggurat', 'easy']
 
