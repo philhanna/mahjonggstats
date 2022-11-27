@@ -7,7 +7,7 @@ class Main:
     def __init__(self, **kwargs):
         self._level_name: str = kwargs.get("name", None)
         self._level_names_only: bool = kwargs.get("level_names_only", False)
-        self._quiet: bool = kwargs.get("quiet", False)
+        self._verbose: bool = kwargs.get("verbose", False)
         self._history: History = Main.get_history()
 
     @staticmethod
@@ -55,8 +55,8 @@ class Main:
         return self._level_names_only
 
     @property
-    def quiet(self) -> bool:
-        return self._quiet
+    def verbose(self):
+        return self._verbose
 
     def run(self):
         """Runs the mainline"""
@@ -70,12 +70,12 @@ class Main:
             return
 
         # Print the number of games between the earliest and latest date
-        if not self.quiet and self.level_name is None:
+        if self.verbose and self.level_name is None:
             count, start, end = self.get_game_data()
             print(f"\nMahjongg history of {count} games from {start} to {end}")
 
-        # If quiet, just print the history summary
-        if self.quiet:
+        # If quiet (not verbose), just print the history summary
+        if not self.verbose:
             self.print_summary(level_names)
             return
 

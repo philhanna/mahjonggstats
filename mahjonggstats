@@ -7,7 +7,7 @@ from mj import Main
 parser = argparse.ArgumentParser(description='mahjonggstats')
 parser.add_argument('--name', '-n', help='select only this level name')
 parser.add_argument('--level-names-only', '-l', action='store_true', help='show level names only')
-parser.add_argument('--quiet', '-q', action='store_true', help='show level names and averages only')
+parser.add_argument('--verbose', '-v', action='store_true', help='show level names and averages only')
 kwargs = vars(parser.parse_args())
 
 try:

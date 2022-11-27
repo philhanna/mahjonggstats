@@ -14,7 +14,7 @@ class TestMain:
         main = Main(**{})
         assert main.level_name is None
         assert not main.level_names_only
-        assert not main.quiet
+        assert not main.verbose
 
     def test_level_name(self):
         parms = {'name': 'bogus'}
@@ -23,7 +23,7 @@ class TestMain:
 
     def test_run(self):
         with StringIO() as out, stdout_redirected(out):
-            parms = {}
+            parms = {'verbose': True}
             main = Main(**parms)
             main.run()
             output = out.getvalue()
@@ -40,7 +40,7 @@ class TestMain:
 
     def test_run_quiet(self):
         with StringIO() as out, stdout_redirected(out):
-            parms = {'quiet': True}
+            parms = {}
             main = Main(**parms)
             main.run()
             output = out.getvalue()
