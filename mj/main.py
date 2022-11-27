@@ -10,6 +10,42 @@ class Main:
         self._quiet: bool = kwargs.get("quiet", False)
         self._history: History = Main.get_history()
 
+    @staticmethod
+    def get_date_format() -> str:
+        """Returns the preferred date format string"""
+        datefmt: str = "%Y-%m-%d"
+        return datefmt
+
+    def get_game_data(self) -> tuple[int, str, str]:
+        """Prints the heading for the number of games"""
+        count = len(self.history.records)
+        start = self.history.earliest_date.strftime(Main.get_date_format())
+        end = self.history.latest_date.strftime(Main.get_date_format())
+        return count, start, end
+
+    @staticmethod
+    def get_history() -> History:
+        """Returns the mahjongg history"""
+        history: History = History()
+        if len(history.records) == 0:
+            raise RuntimeError(f'No mahjongg history yet')
+        return history
+
+    def get_level_names(self):
+        """Returns the list of levels names in history, sorted by mean seconds"""
+        level_name = self.level_name
+        if level_name is not None:
+            if level_name not in self.history.levels.keys():
+                raise ValueError(f'Level {level_name} not found')
+            level_names = [level_name]
+        else:
+            level_names = self.history.level_names
+        return level_names
+
+    @property
+    def history(self) -> History:
+        return self._history
+
     @property
     def level_name(self) -> str:
         return self._level_name
@@ -21,10 +57,6 @@ class Main:
     @property
     def quiet(self) -> bool:
         return self._quiet
-
-    @property
-    def history(self) -> History:
-        return self._history
 
     def run(self):
         """Runs the mainline"""
@@ -90,37 +122,3 @@ class Main:
             level_history = self.history.get_level_history(level_name)
             prefix = get_prefix(level_history)
             print(f'{prefix:{maxprefix}} average={HistoryLine.format_time(level_history.mean)}')
-
-    def get_game_data(self) -> tuple[int, str, str]:
-        """Prints the heading for the number of games"""
-        count = len(self.history.records)
-        start = self.history.earliest_date.strftime(Main.get_date_format())
-        end = self.history.latest_date.strftime(Main.get_date_format())
-        return count, start, end
-
-    def get_level_names(self):
-        """Returns the list of levels names in history, sorted by mean seconds"""
-        level_name = self.level_name
-        if level_name is not None:
-            if level_name not in self.history.levels.keys():
-                raise ValueError(f'Level {level_name} not found')
-            level_names = [level_name]
-        else:
-            level_names = self.history.level_names
-        return level_names
-
-    @staticmethod
-    def get_date_format() -> str:
-        """Returns the preferred date format string"""
-        datefmt: str = "%Y-%m-%d"
-        return datefmt
-
-    @staticmethod
-    def get_history() -> History:
-        """Returns the mahjongg history"""
-        history: History = History()
-        if len(history.records) == 0:
-            raise RuntimeError(f'No mahjongg history yet')
-        return history
-
-

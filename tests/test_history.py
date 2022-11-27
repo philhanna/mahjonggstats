@@ -6,6 +6,11 @@ from mj import History, HistoryLine, LevelHistory
 from tests import testdata
 
 
+def test_ordinary_load():
+    history = History()
+    assert len(history.records) > 4
+    del history
+
 class TestHistory:
 
     def setup_method(self):
