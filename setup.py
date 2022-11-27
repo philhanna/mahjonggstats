@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='mahjonggstats',
-    version='2.0.1',
+    version='2.2.0',
     packages=['mj'],
     url='https://github.com/philhanna/mahjonggstats',
     license='MIT license',
