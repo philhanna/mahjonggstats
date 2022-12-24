@@ -3,6 +3,7 @@ from setuptools import setup
 setup(
     name='mahjonggstats',
     version='2.2.0',
+    install_requires=['pytest'],
     packages=['mj'],
     url='https://github.com/philhanna/mahjonggstats',
     license='MIT license',
