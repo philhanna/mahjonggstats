@@ -1,5 +1,7 @@
 from datetime import date, time
 
+import pytest
+
 from mj import HistoryLine
 
 
@@ -9,29 +11,15 @@ def test_eq():
     assert a == b
 
 
-def test_format_time_all_day():
-    seconds = 60 * 60 * 24 - 1
-    assert HistoryLine.format_time(seconds) == "23:59:59"
-
-
-def test_format_time_empty():
-    seconds = 0
-    assert HistoryLine.format_time(seconds) == "00:00"
-
-
-def test_format_time_hour_plus():
-    seconds = 3603
-    assert HistoryLine.format_time(seconds) == "01:00:03"
-
-
-def test_format_time_one_minute():
-    seconds = 60
-    assert HistoryLine.format_time(seconds) == "01:00"
-
-
-def test_format_time_two_seconds():
-    seconds = 2
-    assert HistoryLine.format_time(seconds) == "00:02"
+@pytest.mark.parametrize("seconds,expected", [
+    (60 * 60 * 24 - 1, "23:59:59"),     # all day
+    (0, "00:00"),                       # empty
+    (3603, "01:00:03"),                 # hour plus
+    (60, "01:00"),                      # one minute
+    (2, "00:02"),                       # two seconds
+])
+def test_format_time(seconds, expected):
+    assert HistoryLine.format_time(seconds) == expected
 
 
 def test_game_date():
