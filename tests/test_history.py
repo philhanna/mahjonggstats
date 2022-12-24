@@ -8,10 +8,7 @@ from tests import testdata
 
 @pytest.fixture
 def history(monkeypatch):
-    def mock_load():
-        return testdata.splitlines()
-
-    monkeypatch.setattr(History, 'load', mock_load)
+    monkeypatch.setattr(History, 'load', lambda: testdata.splitlines())
     history = History()
     return history
 
