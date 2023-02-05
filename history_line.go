@@ -1,9 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"strconv"
 	"strings"
 	"time"
-	"strconv"
 )
 
 // HistoryLine is a single record in mahjongg history
@@ -25,4 +26,21 @@ func NewHistoryLine(line string) HistoryLine {
 	historyLine.levelName = tokens[1]
 	historyLine.seconds, _ = strconv.Atoi(tokens[2])
 	return historyLine
+}
+
+// FormatTime reates a string with hh:mm:ss from the specified number of seconds
+func FormatTime(seconds int) string {
+	mm := int(seconds / 60)
+	ss := seconds % 60
+	timeString := fmt.Sprintf("%02d:%02d", mm, ss)
+	if mm >= 60 {
+		hh := int(mm/60)
+		mm = mm % 60
+		timeString = fmt.Sprintf("%02d:%02d:%02d", hh, mm, ss)
+	}
+	return timeString
+}
+
+func (hl HistoryLine) GameDate() time.Time {
+	return hl.gameDate
 }

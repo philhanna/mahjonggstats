@@ -10,17 +10,19 @@ type LevelHistory struct {
 
 // Mean returns the mean of the time values for all records
 func (lh LevelHistory) Mean() float64 {	
-	secondsList := stats.Float64Data
+	secondsList := make(stats.Float64Data, 0)
 	for _, historyLine := range lh.records {
 		seconds := float64(historyLine.seconds)
 		secondsList = append(secondsList, seconds)
 	}
-	return secondsList.Mean()
+	mean, _ := secondsList.Mean()
+	return mean
 }
 
 // StandardDeviation returns the standard deviation of the time values for all records
 func (lh LevelHistory) StandardDeviation() float64 {	
-	secondsList := stats.Float64Data
+	//secondsList := stats.Float64Data
+	secondsList := make(stats.Float64Data, 0)
 	if len(secondsList) < 2 {
 		return 0
 	}
