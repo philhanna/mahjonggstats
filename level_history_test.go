@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func theTestData(levelName string) []HistoryLine {
+func levelHistory(levelName string) []HistoryLine {
 	lines := strings.Split(testdata, "\n")
 	var hls []HistoryLine
 	for _, line := range lines {
@@ -28,7 +28,7 @@ func TestLevelHistory_Confidence(t *testing.T) {
 		wantLo float64
 		wantHi float64
 	}{
-		{"good", fields{"easy", theTestData("easy")}, 132.51162, 375.48838},
+		{"good", fields{"easy", levelHistory("easy")}, 132.51162, 375.48838},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -57,7 +57,7 @@ func TestLevelHistory_Mean(t *testing.T) {
 		fields fields
 		want   float64
 	}{
-		{"good", fields{"easy", theTestData("easy")}, 254.0},
+		{"good", fields{"easy", levelHistory("easy")}, 254.0},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -84,7 +84,7 @@ func TestLevelHistory_StandardDeviation(t *testing.T) {
 		fields fields
 		want   float64
 	}{
-		{"good", fields{"easy", theTestData("easy")}, 61.98386},
+		{"good", fields{"easy", levelHistory("easy")}, 61.98386},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
