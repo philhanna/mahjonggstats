@@ -28,7 +28,7 @@ func NewHistoryLine(line string) HistoryLine {
 	return historyLine
 }
 
-// FormatTime reates a string with hh:mm:ss from the specified number of seconds
+// FormatTime creates a string with hh:mm:ss from the specified number of seconds
 func FormatTime(seconds int) string {
 	mm := int(seconds / 60)
 	ss := seconds % 60
