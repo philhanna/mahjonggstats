@@ -8,6 +8,13 @@ type LevelHistory struct {
 	records []HistoryLine
 }
 
+// Constructor for LevelHistory
+func NewLevelHistory(levelName string, records []HistoryLine) *LevelHistory {
+	lh := new(LevelHistory)
+	lh.levelName = levelName
+	return lh
+}
+
 // Mean returns the mean of the time values for all records
 func (lh LevelHistory) Mean() float64 {	
 	secondsList := make(stats.Float64Data, 0)
@@ -21,16 +28,15 @@ func (lh LevelHistory) Mean() float64 {
 
 // StandardDeviation returns the standard deviation of the time values for all records
 func (lh LevelHistory) StandardDeviation() float64 {	
-	//secondsList := stats.Float64Data
 	secondsList := make(stats.Float64Data, 0)
-	if len(secondsList) < 2 {
-		return 0
-	}
 	for _, historyLine := range lh.records {
 		seconds := float64(historyLine.seconds)
 		secondsList = append(secondsList, seconds)
 	}
-	stdev, _ := secondsList.StandardDeviation()
+	if len(secondsList) < 2 {
+		return 0
+	}
+	stdev, _ := secondsList.StandardDeviationSample()
 	return stdev
 }
 // Confidence returns the low and high estimates at a 95% confidence level
