@@ -25,5 +25,4 @@ func NewHistoryLine(line string) HistoryLine {
 	historyLine.levelName = tokens[1]
 	historyLine.seconds, _ = strconv.Atoi(tokens[2])
 	return historyLine
-
 }
