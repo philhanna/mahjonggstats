@@ -3,4 +3,5 @@ Repository: [https://github.com/philhanna/mahjonggstats](https://github.com/phil
 Go program to display statistics from Gnome mahjongg.
 
 ## Unstable
-This version is still under active development
+This version is still under active development.
+The Python branch is fully functional.
