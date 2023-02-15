@@ -4,10 +4,9 @@ package mj
 // Type definitions
 // ---------------------------------------------------------------------
 
-// Controller contains the model, view, and command line arguments.
+// Controller contains the view and command line arguments.
 type Controller struct {
-	model          History
-	view           View
+	view           *View
 	name           string
 	levelNamesOnly bool
 	verbose        bool
@@ -18,9 +17,10 @@ type Controller struct {
 // ---------------------------------------------------------------------
 
 // NewController creates a new Controller object using the specified
-// model, view, and command line arguments.
-func NewController(model History, view View, args map[string]any) Controller {
+// view and command line arguments.
+func NewController(view *View, args map[string]any) Controller {
 	c := new(Controller)
+	c.view = view
 	c.name = string(args["n"].(string))
 	c.levelNamesOnly = bool(args["l"].(bool))
 	c.verbose = bool(args["v"].(bool))

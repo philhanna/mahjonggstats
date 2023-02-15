@@ -12,7 +12,7 @@ import (
 
 // View presents the history on standard output.
 type View struct {
-	model      History
+	model      *History
 	levelNames []string
 	levels     []LevelHistory
 }
@@ -22,7 +22,7 @@ type View struct {
 // ---------------------------------------------------------------------
 
 // NewView creates a new View with the specified history model.
-func NewView(model History) View {
+func NewView(model *History) View {
 	v := new(View)
 	v.model = model
 	v.levelNames = append(v.levelNames, model.LevelNames()...)
@@ -100,7 +100,7 @@ func (v View) ShowSummary() {
 		count := lh.Count()
 		gamesString := pluralize(count, "game")
 		levelName := lh.LevelName
-		return fmt.Sprintf("%d %s at level %q", count, gamesString, levelName)
+		return fmt.Sprintf("%d %s at level %q\n", count, gamesString, levelName)
 	}
 
 	prefixes := []string{}

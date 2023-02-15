@@ -19,7 +19,7 @@ func main() {
 	args["v"] = verbose
 	
 	model := mj.NewHistory()
-	view := mj.NewView(model)
-	controller := mj.NewController(model, view, args)
+	view := mj.NewView(&model)
+	controller := mj.NewController(&view, args)
 	controller.Run()
 }
