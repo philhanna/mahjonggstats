@@ -100,7 +100,7 @@ func (v View) ShowSummary() {
 		count := lh.Count()
 		gamesString := pluralize(count, "game")
 		levelName := lh.LevelName
-		return fmt.Sprintf("%d %s at level %q\n", count, gamesString, levelName)
+		return fmt.Sprintf("%d %s at level %q", count, gamesString, levelName)
 	}
 
 	prefixes := []string{}
@@ -119,9 +119,9 @@ func (v View) ShowSummary() {
 
 	for _, lh := range v.levels {
 		prefix := getPrefix(lh)
-		part1 := fmt.Sprintf("%*s", maxPrefixLength, prefix)
+		part1 := fmt.Sprintf("%-*s", maxPrefixLength, prefix)
 		part2 := fmt.Sprintf("average=%s", FormatTime(int(lh.Mean())))
-		fmt.Printf(part1 + " " + part2)
+		fmt.Println(part1 + " " + part2)
 	}
 }
 
