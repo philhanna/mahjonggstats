@@ -22,5 +22,4 @@ func main() {
 	view := mj.NewView(model)
 	controller := mj.NewController(model, view, args)
 	controller.Run()
-
 }
