@@ -9,6 +9,10 @@ import (
 
 const timeFormat = "2006-01-02T15:04:05-0700"
 
+// ---------------------------------------------------------------------
+// Type definitions
+// ---------------------------------------------------------------------
+
 // HistoryLine is a single record in mahjongg history.
 // There is a file named "history" in ~/.local/share/gnome-mahjongg
 // which contains a line for each completed game. This line contains:
