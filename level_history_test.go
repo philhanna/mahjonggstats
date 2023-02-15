@@ -1,4 +1,4 @@
-package main
+package mj
 
 import (
 	"strings"
@@ -10,7 +10,7 @@ func levelHistory(levelName string) []HistoryLine {
 	var hls []HistoryLine
 	for _, line := range lines {
 		hl, _ := NewHistoryLine(line)
-		if hl.levelName == levelName {
+		if hl.LevelName == levelName {
 			hls = append(hls, hl)
 		}
 	}

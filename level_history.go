@@ -1,11 +1,11 @@
-package main
+package mj
 
 import "github.com/montanaflynn/stats"
 
 // LevelHistory is a list of history lines for a particular level
 type LevelHistory struct {
 	levelName string
-	records []HistoryLine
+	records   []HistoryLine
 }
 
 // Constructor for LevelHistory
@@ -16,10 +16,10 @@ func NewLevelHistory(levelName string, records []HistoryLine) *LevelHistory {
 }
 
 // Mean returns the mean of the time values for all records
-func (lh LevelHistory) Mean() float64 {	
+func (lh LevelHistory) Mean() float64 {
 	secondsList := make(stats.Float64Data, 0)
 	for _, historyLine := range lh.records {
-		seconds := float64(historyLine.seconds)
+		seconds := float64(historyLine.Seconds)
 		secondsList = append(secondsList, seconds)
 	}
 	mean, _ := secondsList.Mean()
@@ -27,10 +27,10 @@ func (lh LevelHistory) Mean() float64 {
 }
 
 // StandardDeviation returns the standard deviation of the time values for all records
-func (lh LevelHistory) StandardDeviation() float64 {	
+func (lh LevelHistory) StandardDeviation() float64 {
 	secondsList := make(stats.Float64Data, 0)
 	for _, historyLine := range lh.records {
-		seconds := float64(historyLine.seconds)
+		seconds := float64(historyLine.Seconds)
 		secondsList = append(secondsList, seconds)
 	}
 	if len(secondsList) < 2 {
@@ -39,6 +39,7 @@ func (lh LevelHistory) StandardDeviation() float64 {
 	stdev, _ := secondsList.StandardDeviationSample()
 	return stdev
 }
+
 // Confidence returns the low and high estimates at a 95% confidence level
 func (lh LevelHistory) Confidence() (float64, float64) {
 	mean := lh.Mean()

@@ -1,4 +1,4 @@
-package main
+package mj
 
 import "math"
 
@@ -19,5 +19,5 @@ func almostEqual(floats ...float64) bool {
 	if len(floats) > 2 {
 		delta = floats[2]
 	}
-	return math.Abs(a - b) <= delta
+	return math.Abs(a-b) <= delta
 }
