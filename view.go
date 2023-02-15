@@ -38,7 +38,8 @@ func NewView(model *History) View {
 
 // ShowAllLevels displays the history for each level. 
 func (v View) ShowAllLevels() {
-	for levelName, levelHistory := range v.levels {
+	for i, levelHistory := range v.levels {
+		levelName := v.levelNames[i]
 
 		mean := levelHistory.Mean()
 		stndev := levelHistory.StandardDeviation()
@@ -73,7 +74,6 @@ func (v View) ShowAllLevels() {
 		for _, h := range top5 {
 			fmt.Printf("\t\t  %s\n", h.TimeDate())	
 		}
-		fmt.Println()
 	}
 }
 
