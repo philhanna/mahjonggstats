@@ -18,7 +18,9 @@ Here are the types associated with each:
 - `View`
 
 ### Controller
-- `cmd/mahjonggstats`
+- `Controller`
+
+The mainline is `cmd/main.go`.
 
 ## References
 - [Github repository](https://github.com/philhanna/mahjonggstats)
