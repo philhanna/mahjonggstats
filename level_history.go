@@ -29,6 +29,11 @@ func NewLevelHistory(levelName string, records []HistoryLine) LevelHistory {
 // Methods
 // ---------------------------------------------------------------------
 
+// Count returns the number of history lines in this level
+func (lh LevelHistory) Count() int {
+	return len(lh.Records)
+}
+
 // Mean returns the mean of the time values for all records.
 func (lh LevelHistory) Mean() float64 {
 	secondsList := make(stats.Float64Data, 0)
