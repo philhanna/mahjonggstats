@@ -1,7 +1,12 @@
 package main
 
-import mj "github.com/philhanna/mahjonggstats"
-import "flag"
+import (
+	"flag"
+	"fmt"
+	"os"
+
+	mj "github.com/philhanna/mahjonggstats"
+)
 
 func main() {
 	var name string
@@ -19,7 +24,10 @@ func main() {
 	args["v"] = verbose
 	
 	model := mj.NewHistory()
-	view := mj.NewView(&model)
+	view, err := mj.NewView(&model, args)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
 	controller := mj.NewController(&view, args)
 	controller.Run()
 }

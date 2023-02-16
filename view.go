@@ -1,6 +1,7 @@
 package mj
 
 import (
+	"errors"
 	"fmt"
 	"sort"
 	"time"
@@ -22,21 +23,39 @@ type View struct {
 // ---------------------------------------------------------------------
 
 // NewView creates a new View with the specified history model.
-func NewView(model *History) View {
+func NewView(model *History, args map[string]any) (View, error) {
 	v := new(View)
 	v.model = model
-	v.levelNames = append(v.levelNames, model.LevelNames()...)
-	for _, level := range model.Levels {
-		v.levels = append(v.levels, level)
+
+	// Restrict the levels if the -n option was specified
+	if args["n"] != "" {
+		name := args["n"].(string)
+		lh, ok := model.Levels[name]
+		if !ok {
+			errmsg := fmt.Sprintf("Level %q not found in history", name)
+			return *v, errors.New(errmsg)
+		}
+		v.levelNames = []string{name}
+		v.levels = []LevelHistory{lh}
+	} else {
+		v.levelNames = append(v.levelNames, model.LevelNames()...)
+		for _, level := range model.Levels {
+			v.levels = append(v.levels, level)
+		}
 	}
-	return *v
+	return *v, nil
 }
 
 // ---------------------------------------------------------------------
 // Methods
 // ---------------------------------------------------------------------
 
-// ShowAllLevels displays the history for each level. 
+// RestrictLevelsTo limits the display to just the specified level name
+func (v View) RestrictLevelsTo(name string) {
+
+}
+
+// ShowAllLevels displays the history for each level.
 func (v View) ShowAllLevels() {
 	for i, levelHistory := range v.levels {
 		levelName := v.levelNames[i]
@@ -56,10 +75,10 @@ func (v View) ShowAllLevels() {
 		fmt.Printf("\tμ\t= %s\n", meanString)
 		fmt.Printf("\tσ\t= %s\n", stndevString)
 		fmt.Printf("\trange\t= %s to %s (at 95%% confidence level)\n", loString, hiString)
-	
+
 		// Slice of five if there are fewer:
 		// https://go.dev/play/p/Kf85DFQ_8Lr
-		
+
 		// Create top5 with all the history, then sort it and select just the top 5.
 		// This is actually the five *shortest* times.
 		top5 := make([]HistoryLine, 0, len(levelHistory.Records)+5)
@@ -72,7 +91,7 @@ func (v View) ShowAllLevels() {
 		scoreString := pluralize(len(top5), "score")
 		fmt.Printf("\ttop %s:\n", scoreString)
 		for _, h := range top5 {
-			fmt.Printf("\t\t  %s\n", h.TimeDate())	
+			fmt.Printf("\t\t  %s\n", h.TimeDate())
 		}
 	}
 }
