@@ -81,12 +81,20 @@ func (v View) ShowAllLevels() {
 
 		// Create top5 with all the history, then sort it and select just the top 5.
 		// This is actually the five *shortest* times.
+
+		existing := len(levelHistory.Records)
+
 		top5 := make([]HistoryLine, 0, len(levelHistory.Records)+5)
-		top5 = append(top5, levelHistory.Records...)
+		// top5 = append(top5, levelHistory.Records...)
+		for i, hl := range levelHistory.Records {
+			if i < existing && len(top5) < 5{
+				top5 = append(top5, hl)
+			}
+		}
 		sort.Slice(top5, func(i, j int) bool {
 			return top5[i].Seconds < top5[j].Seconds
 		})
-		top5 = top5[:5]
+		//top5 = top5[:5]
 
 		scoreString := pluralize(len(top5), "score")
 		fmt.Printf("\ttop %s:\n", scoreString)
