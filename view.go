@@ -81,7 +81,7 @@ func (v View) ShowAllLevels() {
 
 		top5 := make([]HistoryLine, 0, len(levelHistory.Records)+5)
 		for i, hl := range levelHistory.Records {
-			if i < existing && len(top5) < 5{
+			if i < existing && len(top5) < 5 {
 				top5 = append(top5, hl)
 			}
 		}
@@ -145,6 +145,8 @@ func (v View) ShowSummary() {
 	}
 }
 
+// Returns the correct form of the name according to the count, e.g.
+// "score" if count is 1, "scores" otherwise.
 func pluralize(count int, name string) string {
 	if count == 1 {
 		return name
