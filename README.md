@@ -1,10 +1,6 @@
 # mahjonggstats
 Go program to display statistics from Gnome mahjongg.
 
-## Unstable
-This version is still under active development.
-The Python branch is fully functional.
-
 ## Software architecture
 This project uses a [Model-View-Controller][idMVC] approach.
 Here are the types associated with each:
