@@ -89,7 +89,6 @@ func TestLevelHistory_Confidence(t *testing.T) {
 		{"good", fields{"easy", levelHistory("easy")}, 132.51162, 375.48838},
 		{"single entry", fields{"ziggurat", levelHistory("ziggurat")}, 228, 228},
 		{"empty", fields{"BOGUS", levelHistory("BOGUS")}, 0, 0},
-
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

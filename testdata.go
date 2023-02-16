@@ -2,7 +2,7 @@ package mj
 
 import "math"
 
-const testdata =`2022-07-31T01:51:05-0400 easy 308
+const testdata = `2022-07-31T01:51:05-0400 easy 308
 2022-08-04T22:27:39-0400 easy 243
 2022-08-05T23:50:36-0400 difficult 218
 2022-08-06T22:57:13-0400 ziggurat 228

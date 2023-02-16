@@ -138,7 +138,7 @@ func (h History) LatestDate() time.Time {
 // of each level.
 func (h History) LevelNames() []string {
 	list := h.unsortedLevelNames()
-	getMean := func (i int) float64 {
+	getMean := func(i int) float64 {
 		nameI := list[i]
 		mapI := h.Levels[nameI]
 		meanI := mapI.Mean()
