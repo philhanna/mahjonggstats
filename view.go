@@ -32,7 +32,7 @@ func NewView(model *History, args map[string]any) (View, error) {
 		name := args["n"].(string)
 		lh, ok := model.Levels[name]
 		if !ok {
-			errmsg := fmt.Sprintf("Level %q not found in history", name)
+			errmsg := fmt.Sprintf("mahjonggstats: Level %q not found in history", name)
 			return *v, errors.New(errmsg)
 		}
 		v.levelNames = []string{name}
