@@ -3,32 +3,35 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning].
 The format is based on [Keep a Changelog].
 
+## [v3.0.0] - 2023-02-15
 
-## [Unreleased]
+This is a completely new version, written in Go, including all the
+functionality of the previous Python version. That version can still
+be found in the `python` branch.
 
-- Added this changelog
+## Python version
 
-## [2.3.0] - 2022-12-24
+### [2.3.0] - 2022-12-24
 
 - Added the `--version` command line option
 - Made -q the default option
 
-## [2.2.0] - 2022-11-27
+### [2.2.0] - 2022-11-27
 
 - Made -q the default option
 
-## [2.0.0] - 2022-11-27
+### [2.0.0] - 2022-11-27
 
 - Refactored classes
 - Added LICENSE file
 - Moved mainline functions into `main`
 
-## [1.2.0] - 2019-03-19
+### [1.2.0] - 2019-03-19
 
 - Allowed override to statistics file name
 - Added -l and -n options
 
-## [1.1.0] - 2019-01-06
+### [1.1.0] - 2019-01-06
 
 Overhauled old version:
 - Refactored into classes
@@ -42,7 +45,8 @@ Overhauled old version:
 
 [Semantic Versioning]: http://semver.org
 [Keep a Changelog]: http://keepachangelog.com
-[Unreleased]: https://github.com/philhanna/mahjonggstats/compare/2.3.0..HEAD 
+[Unreleased]: https://github.com/philhanna/mahjonggstats/compare/v3.0.0..HEAD 
+[v3.0.0]: https://github.com/philhanna/mahjonggstats/compare/2.3.0..v3.0.0
 [2.3.0]: https://github.com/philhanna/mahjonggstats/compare/2.2.0..2.3.0
 [2.2.0]: https://github.com/philhanna/mahjonggstats/compare/2.0.0..2.2.0
 [2.0.0]: https://github.com/philhanna/mahjonggstats/compare/1.2.0..2.0.0
