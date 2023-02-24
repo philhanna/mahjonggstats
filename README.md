@@ -1,6 +1,6 @@
 # mahjonggstats
-[![Go Report Card](https:/goreportcard.com/badge/github.com/philhanna/mahjonggstats)][idGoReportCard]
-[![PkgGoDev](https:/pkg.go.dev/badge/github.com/philhanna/mahjonggstats)][idPkgGoDev]
+[![Go Report Card](https://goreportcard.com/badge/github.com/philhanna/mahjonggstats)][idGoReportCard]
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/philhanna/mahjonggstats)][idPkgGoDev]
 
 Go program to display statistics from Gnome mahjongg.
 
@@ -28,5 +28,5 @@ The mainline is `cmd/main.go`.
 
 [idMVC]: https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller
 
-[idGoReportCard]: https:/goreportcard.com/report/github.com/philhanna/mahjonggstats
-[idPkgGoDev]: https:/pkg.go.dev/github.com/philhanna/mahjonggstats
+[idGoReportCard]: https://goreportcard.com/report/github.com/philhanna/mahjonggstats
+[idPkgGoDev]: https://pkg.go.dev/github.com/philhanna/mahjonggstats
