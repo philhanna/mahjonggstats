@@ -19,7 +19,7 @@ Here are the types associated with each:
 ### Controller
 - `Controller`
 
-The mainline is `cmd/main.go`.
+The mainline is `cmd/mahjonggstats.go`.
 
 ## References
 - [Github repository](https://github.com/philhanna/mahjonggstats)
