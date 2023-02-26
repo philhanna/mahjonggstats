@@ -120,7 +120,7 @@ func (v View) ShowSummary() {
 		count := lh.Count()
 		gamesString := pluralize(count, "game")
 		levelName := lh.LevelName
-		return fmt.Sprintf("%d %s at level %q", count, gamesString, levelName)
+		return fmt.Sprintf("%3d %s at level %q", count, gamesString, levelName)
 	}
 
 	prefixes := []string{}
@@ -137,7 +137,16 @@ func (v View) ShowSummary() {
 		}
 	}
 
-	for _, lh := range v.levels {
+	// Sort the levels by average time
+	sortedLevels := make([]LevelHistory, len(v.levels))
+	for i, lh := range v.levels {
+		sortedLevels[i] = lh
+	}
+	sort.Slice(sortedLevels, func(i, j int) bool {
+		return sortedLevels[i].Mean() < sortedLevels[j].Mean()
+	})
+
+	for _, lh := range sortedLevels {
 		prefix := getPrefix(lh)
 		part1 := fmt.Sprintf("%-*s", maxPrefixLength, prefix)
 		part2 := fmt.Sprintf("average=%s", FormatTime(int(lh.Mean())))
