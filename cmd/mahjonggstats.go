@@ -22,7 +22,7 @@ options:
 
 `
 	// Custom usage message
-	flag.Usage = func() { fmt.Print(usage) }
+	flag.Usage = func() { fmt.Fprint(os.Stderr, usage) }
 
 	var name string
 	var levelNamesOnly bool
