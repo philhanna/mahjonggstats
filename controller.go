@@ -9,6 +9,7 @@ type Controller struct {
 	view           *View
 	name           string
 	levelNamesOnly bool
+	sortOpt        string
 	verbose        bool
 }
 
@@ -23,6 +24,7 @@ func NewController(view *View, args map[string]any) Controller {
 	c.view = view
 	c.name = string(args["n"].(string))
 	c.levelNamesOnly = bool(args["l"].(bool))
+	c.sortOpt = string(args["s"].(string))
 	c.verbose = bool(args["v"].(bool))
 	return *c
 }
