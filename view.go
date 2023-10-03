@@ -149,22 +149,21 @@ func (v View) ShowSummary() {
 		sortedLevels[i] = lh
 	}
 	sort.Slice(sortedLevels, func(i, j int) bool {
-		sortArg := v.args["s"].(string)
-		field := sortArg[0]     // G, N, T
-		direction := sortArg[1] // A or D
+		field := v.args["sf"].(string)     // G, N, T
+		direction := v.args["sd"].(bool) // A or D
 		var isLess bool
 		switch field {
-		case 'G':
+		case "G":
 			isLess = sortedLevels[i].Count() < sortedLevels[j].Count()
-		case 'N':
+		case "N":
 			isLess = sortedLevels[i].LevelName < sortedLevels[j].LevelName
-		case 'T':
+		case "T":
 			isLess = sortedLevels[i].Mean() < sortedLevels[j].Mean()
 		}
-		if direction == 'D' {
+		if direction == true {
 			isLess = !isLess
 		}
-		return sortedLevels[i].Mean() < sortedLevels[j].Mean()
+		return isLess
 	})
 
 	for _, lh := range sortedLevels {
