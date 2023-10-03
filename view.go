@@ -149,7 +149,7 @@ func (v View) ShowSummary() {
 		sortedLevels[i] = lh
 	}
 	sort.Slice(sortedLevels, func(i, j int) bool {
-		field := v.args["sf"].(string)     // G, N, T
+		field := v.args["sf"].(string)   // G, N, T
 		direction := v.args["sd"].(bool) // A or D
 		var isLess bool
 		switch field {
