@@ -20,7 +20,7 @@ options:
   -h, --help                  Show this help message and exit
   -n, --name=NAME             Include only level name NAME
   -l, --level-names-only      Show level names only
-  -s, --sort=[G|N|T][A|D]     Sort by games, name, or time, asc/desc
+  -s, --sort=[G|N|T][A|D]     Sort by number of games, name, or time, asc/desc
   -v, --verbose               Show complete statistics
 
 `
