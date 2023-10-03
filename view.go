@@ -16,6 +16,7 @@ type View struct {
 	model      *History
 	levelNames []string
 	levels     []LevelHistory
+	args       map[string]any
 }
 
 // ---------------------------------------------------------------------
@@ -26,6 +27,7 @@ type View struct {
 func NewView(model *History, args map[string]any) (View, error) {
 	v := new(View)
 	v.model = model
+	v.args = args
 
 	// Restrict the levels if the -n option was specified
 	if args["n"] != "" {
@@ -108,7 +110,10 @@ func (v View) ShowHeading() {
 
 // ShowLevelNames displays the level names.
 func (v View) ShowLevelNames() {
-	for _, levelName := range v.levelNames {
+	names := make([]string, len(v.levelNames))
+	copy(names, v.levelNames)
+	sort.Strings(names)
+	for _, levelName := range names {
 		fmt.Println(levelName)
 	}
 }
