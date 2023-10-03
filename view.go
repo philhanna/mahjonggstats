@@ -142,12 +142,28 @@ func (v View) ShowSummary() {
 		}
 	}
 
-	// Sort the levels by average time
+	// Sort the levels by the selected sort criterion
+	// (default is average time per game)
 	sortedLevels := make([]LevelHistory, len(v.levels))
 	for i, lh := range v.levels {
 		sortedLevels[i] = lh
 	}
 	sort.Slice(sortedLevels, func(i, j int) bool {
+		sortArg := v.args["s"].(string)
+		field := sortArg[0]     // G, N, T
+		direction := sortArg[1] // A or D
+		var isLess bool
+		switch field {
+		case 'G':
+			isLess = sortedLevels[i].Count() < sortedLevels[j].Count()
+		case 'N':
+			isLess = sortedLevels[i].LevelName < sortedLevels[j].LevelName
+		case 'T':
+			isLess = sortedLevels[i].Mean() < sortedLevels[j].Mean()
+		}
+		if direction == 'D' {
+			isLess = !isLess
+		}
 		return sortedLevels[i].Mean() < sortedLevels[j].Mean()
 	})
 
