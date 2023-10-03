@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
@@ -42,30 +43,34 @@ options:
 	flag.Parse()
 
 	// Validate the sort option
-	err := ValidateSortOption(sortOpt)
+	sortField, direction, err := ValidateSortOption(sortOpt)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	args := make(map[string]any)
 	args["n"] = name
 	args["l"] = levelNamesOnly
-	args["s"] = sortOpt
+	args["sf"] = sortField // G, N, or T
+	args["sd"] = direction // True if sort order must be reversed
 	args["v"] = verbose
 
 	model := mj.NewHistory()
 	view, err := mj.NewView(&model, args)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		log.Fatal(err)
 	}
 	controller := mj.NewController(&view, args)
 	controller.Run()
 }
 
 // ValidateSortOption validates the sort option. Length must be <= 2
-// charactrs.  First character represents the sort field, which can be G
+// characters.  First character represents the sort field, which can be G
 // for games played, N for game name, or T for mean time, with T being
 // the default.  Second character (if present) must be A for ascending,
 // or D for descending, with A being the default. Option values are case
 // insensitive.
-func ValidateSortOption(sortOpt string) error {
+func ValidateSortOption(sortOpt string) (string, bool, error) {
 
 	// Make options string uppercase
 	s := strings.ToUpper(sortOpt)
@@ -83,7 +88,7 @@ func ValidateSortOption(sortOpt string) error {
 	case 'G', 'N', 'T':
 		// OK
 	default:
-		return fmt.Errorf(`Invalid sort option. Field must be G|N|T, not %c`, s[0])
+		return "", false, fmt.Errorf(`Invalid sort option. Field must be G|N|T, not %c`, s[0])
 	}
 
 	// Validate sort order
@@ -91,9 +96,9 @@ func ValidateSortOption(sortOpt string) error {
 	case 'A', 'D':
 		// OK
 	default:
-		return fmt.Errorf(`Invalid sort option. Order must be A|D, not %c`, s[1])
+		return "", false, fmt.Errorf(`Invalid sort option. Order must be A|D, not %c`, s[1])
 	}
 
 	// Everything is OK
-	return nil
+	return string(s[0]), s[1] == 'D', nil
 }
