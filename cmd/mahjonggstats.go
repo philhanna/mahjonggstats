@@ -37,13 +37,13 @@ options:
 	flag.BoolVar(&levelNamesOnly, "l", false, "show level names only")
 	flag.BoolVar(&levelNamesOnly, "level-names-only", false, "(long version of -l)")
 	flag.StringVar(&sortOpt, "s", "MA", "Sort by number of games, name, average time, min, asc/desc")
-	flag.StringVar(&sortOpt, "sort", "MA", "Sort by number of games, name, average time, min, asc/desc`")
+	flag.StringVar(&sortOpt, "sort", "MA", "(long version of -s)")
 	flag.BoolVar(&verbose, "v", false, "show detailed summary")
 	flag.BoolVar(&verbose, "verbose", false, "(long version of -v)")
 	flag.Parse()
 
 	// Validate the sort option
-	sortField, direction, err := ValidateSortOption(sortOpt)
+	sortField, direction, err := validateSortOption(sortOpt)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -64,13 +64,13 @@ options:
 	controller.Run()
 }
 
-// ValidateSortOption validates the sort option. Length must be <= 2
+// validateSortOption validates the sort option. Length must be <= 2
 // characters.  First character represents the sort field, which can be G
 // for games played, N for game name, T for mean time, or M for min time, with M being
 // the default.  Second character (if present) must be A for ascending,
 // or D for descending, with A being the default. Option values are case
 // insensitive.
-func ValidateSortOption(sortOpt string) (string, bool, error) {
+func validateSortOption(sortOpt string) (string, bool, error) {
 
 	// Make options string uppercase
 	s := strings.ToUpper(sortOpt)

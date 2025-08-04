@@ -31,7 +31,7 @@ func TestValidateSortOption(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_, _, err := ValidateSortOption(tt.sortOpt)
+			_, _, err := validateSortOption(tt.sortOpt)
 			assert.Equal(t, tt.wantErr, err != nil)
 		})
 	}
