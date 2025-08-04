@@ -3,6 +3,7 @@ package mj
 import (
 	"strings"
 	"testing"
+	"github.com/stretchr/testify/assert"
 )
 
 func levelHistory(levelName string) []HistoryLine {
@@ -15,6 +16,33 @@ func levelHistory(levelName string) []HistoryLine {
 		}
 	}
 	return hls
+}
+
+func TestLevelHistory_Min(t *testing.T) {
+	type fields struct {
+		levelName string
+		records   []HistoryLine
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   int
+	}{
+		{"good", fields{"easy", levelHistory("easy")}, 171},
+		{"single entry", fields{"ziggurat", levelHistory("ziggurat")}, 228},
+		{"empty", fields{"BOGUS", levelHistory("BOGUS")}, 0},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			lh := LevelHistory{
+				LevelName: tt.fields.levelName,
+				Records:   tt.fields.records,
+			}
+			have := lh.Min()
+			want := tt.want
+			assert.Equal(t, want, have)
+		})
+	}
 }
 
 func TestLevelHistory_Mean(t *testing.T) {

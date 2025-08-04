@@ -34,6 +34,22 @@ func (lh LevelHistory) Count() int {
 	return len(lh.Records)
 }
 
+// Min returns the least value of seconds in the level history
+func (lh LevelHistory) Min() int {
+	if lh.Count() == 0 {
+		return 0
+	}
+	var record = lh.Records[0]
+	var least = record.Seconds
+	for _, record = range(lh.Records) {
+		seconds := record.Seconds
+		if seconds < least {
+			least = seconds
+		}
+	}
+	return least
+}
+
 // Mean returns the mean of the time values for all records.
 func (lh LevelHistory) Mean() float64 {
 	secondsList := make(stats.Float64Data, 0)
