@@ -145,9 +145,7 @@ func (v View) ShowSummary() {
 	// Sort the levels by the selected sort criterion
 	// (default is average time per game)
 	sortedLevels := make([]LevelHistory, len(v.levels))
-	for i, lh := range v.levels {
-		sortedLevels[i] = lh
-	}
+	copy(sortedLevels, v.levels)
 	sort.Slice(sortedLevels, func(i, j int) bool {
 		field := v.args["sf"].(string)   // G, N, T, M
 		direction := v.args["sd"].(bool) // A or D
