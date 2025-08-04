@@ -118,7 +118,7 @@ func (v View) ShowLevelNames() {
 	}
 }
 
-// ShowSummary displays a summary of average times for each level.
+// ShowSummary displays a summary of times for each level.
 func (v View) ShowSummary() {
 
 	getPrefix := func(lh LevelHistory) string {
@@ -149,7 +149,7 @@ func (v View) ShowSummary() {
 		sortedLevels[i] = lh
 	}
 	sort.Slice(sortedLevels, func(i, j int) bool {
-		field := v.args["sf"].(string)   // G, N, T
+		field := v.args["sf"].(string)   // G, N, T, M
 		direction := v.args["sd"].(bool) // A or D
 		var isLess bool
 		switch field {
@@ -159,8 +159,10 @@ func (v View) ShowSummary() {
 			isLess = sortedLevels[i].LevelName < sortedLevels[j].LevelName
 		case "T":
 			isLess = sortedLevels[i].Mean() < sortedLevels[j].Mean()
+		case "M":
+			isLess = sortedLevels[i].Min() < sortedLevels[j].Min()
 		}
-		if direction == true {
+		if direction {
 			isLess = !isLess
 		}
 		return isLess
@@ -169,7 +171,7 @@ func (v View) ShowSummary() {
 	for _, lh := range sortedLevels {
 		prefix := getPrefix(lh)
 		part1 := fmt.Sprintf("%-*s", maxPrefixLength, prefix)
-		part2 := fmt.Sprintf("average=%s", FormatTime(int(lh.Mean())))
+		part2 := fmt.Sprintf("average=%s, min=%s", FormatTime(int(lh.Mean())), FormatTime(lh.Min()))
 		fmt.Println(part1 + " " + part2)
 	}
 }
