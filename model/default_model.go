@@ -109,7 +109,6 @@ func (h History) EarliestDate() time.Time {
 }
 
 // LatestDate returns the date of the latest record in the history.
-// Panics if there is no history.
 func (h History) LatestDate() time.Time {
 	var maxTime time.Time
 	for i, x := range h.Records {
