@@ -1,4 +1,4 @@
-package mj
+package model
 
 import "github.com/montanaflynn/stats"
 
