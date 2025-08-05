@@ -15,8 +15,7 @@ const DEFAULT_FILENAME = ".local/share/gnome-mahjongg/history"
 // Type definitions
 // ---------------------------------------------------------------------
 
-// History is a collection of HistoryLine records for this user from the
-// gnome mahjongg history file.
+// History represents all the mahjongg games played by this user.
 type History struct {
 	// The history line record array
 	Records []HistoryLine
@@ -25,19 +24,12 @@ type History struct {
 	Levels map[string]LevelHistory
 }
 
-// Loader specifies the method(s) that a history line loader must
-// implement. The History type implements the interface, and so do
-// any mock objects used for testing.
-type Loader interface {
-	Load() []HistoryLine
-}
-
 // ---------------------------------------------------------------------
 // Constructors
 // ---------------------------------------------------------------------
 
 // NewHistory creates a new History containing all user history records.
-func NewHistory(loaders ...Loader) History {
+func NewHistory(loaders ...HistoryLoader) History {
 
 	h := new(History)
 
@@ -104,14 +96,13 @@ func (h History) Load() []HistoryLine {
 // EarliestDate returns the date of the earliest record in the history.
 // Panics if there is no history.
 func (h History) EarliestDate() time.Time {
-	if len(h.Records) == 0 {
-		panic("There is no history")
-	}
-	var minTime, gameDateTime time.Time
-	for i, x := range h.Records {
-		gameDateTime = x.GameDateTime
-		if i == 0 || gameDateTime.Before(minTime) {
-			minTime = x.GameDateTime
+	var minTime time.Time
+	if len(h.Records) > 0 {
+		for i, x := range h.Records {
+			gameDateTime := x.GameDateTime
+			if i == 0 || gameDateTime.Before(minTime) {
+				minTime = x.GameDateTime
+			}
 		}
 	}
 	return minTime

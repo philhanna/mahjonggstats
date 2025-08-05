@@ -21,7 +21,7 @@ func (m MockHistoryLoader) Load() []HistoryLine {
 	for _, line := range lines {
 		hl, err := NewHistoryLine(line)
 		if err != nil {
-			log.Printf("Unexpected line in mock history data: %q\n", line)
+			log.Fatalf("Unexpected line in mock history data: %q\n", line)
 		}
 		hls = append(hls, hl)
 	}
