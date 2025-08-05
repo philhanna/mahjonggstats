@@ -38,6 +38,11 @@ func TestHistoryNew(t *testing.T) {
 	assert.Equal(t, 0, h.Levels["BOGUS"].Count())
 }
 
+func TestHistoryNewLive(t *testing.T) {
+	h := NewHistory()
+	assert.NotNil(t, h)
+}
+
 func TestHistoryEarliestDate(t *testing.T) {
 	expected, _ := time.Parse(timeFormat, "2022-07-31T01:51:05-0400")
 	h := NewHistory(new(MockHistoryLoader))
