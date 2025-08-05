@@ -86,9 +86,15 @@ func (lh LevelHistory) Confidence() (float64, float64) {
 	stdev := lh.StandardDeviation()
 	conf := 1.96 * stdev
 	lo := mean - conf
-	if lo < 0 {
-		lo = 0
-	}
+	lo = maxFloat64(lo, 0)
 	hi := mean + conf
 	return lo, hi
+}
+
+// maxFloat64 returns the larger of x or y.
+func maxFloat64(x, y float64) float64 {
+	if x > y {
+		return x
+	}
+	return y
 }
