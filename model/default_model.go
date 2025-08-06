@@ -2,6 +2,7 @@ package model
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"path/filepath"
 	"sort"
@@ -146,4 +147,26 @@ func (h History) unsortedLevelNames() []string {
 		list = append(list, name)
 	}
 	return list
+}
+
+// ---------------------------------------------------------------------
+// Functions
+// ---------------------------------------------------------------------
+
+// DateString returns the time as a date-only string in yyyy-mm-dd format
+func DateString(t time.Time) string {
+	return fmt.Sprintf("%04d-%02d-%02d", t.Year(), t.Month(), t.Day())
+}
+
+// FormatTime creates a string with hh:mm:ss from the specified number of seconds
+func FormatTime(seconds int) string {
+	mm := int(seconds / 60)
+	ss := seconds % 60
+	timeString := fmt.Sprintf("%02d:%02d", mm, ss)
+	if mm >= 60 {
+		hh := int(mm / 60)
+		mm = mm % 60
+		timeString = fmt.Sprintf("%02d:%02d:%02d", hh, mm, ss)
+	}
+	return timeString
 }
