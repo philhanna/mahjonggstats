@@ -20,7 +20,7 @@ options:
   -h, --help                  Show this help message and exit
   -n, --name=NAME             Include only level name NAME
   -l, --level-names-only      Show level names only
-  -s, --sort=[G|N|T|M][A|D]   Sort by number of games, name, average, or min, asc/desc
+  -s, --sort=[G|N|A|M][A|D]   Sort by number of games, name, average, or min, asc/desc
   -v, --verbose               Show complete statistics
 
 `
@@ -51,7 +51,7 @@ options:
 	args := make(map[string]any)
 	args["n"] = name
 	args["l"] = levelNamesOnly
-	args["sf"] = sortField // G, N, T, or M
+	args["sf"] = sortField // G, N, A, or M
 	args["sd"] = direction // True if sort order must be reversed
 	args["v"] = verbose
 
@@ -66,7 +66,7 @@ options:
 
 // ValidateSortOption validates the sort option. Length must be <= 2
 // characters.  First character represents the sort field, which can be G
-// for games played, N for game name, T for mean time, or M for min time, with M being
+// for games played, N for game name, A for mean time, or M for min time, with M being
 // the default.  Second character (if present) must be A for ascending,
 // or D for descending, with A being the default. Option values are case
 // insensitive.
@@ -85,10 +85,10 @@ func ValidateSortOption(sortOpt string) (string, bool, error) {
 
 	// Validate sort field
 	switch s[0] {
-	case 'G', 'N', 'T', 'M':
+	case 'G', 'N', 'A', 'M':
 		// OK
 	default:
-		return "", false, fmt.Errorf(`invalid sort option. Field must be G|N|T|M, not %c`, s[0])
+		return "", false, fmt.Errorf(`invalid sort option. Field must be G|N|A|M, not %c`, s[0])
 	}
 
 	// Validate sort order

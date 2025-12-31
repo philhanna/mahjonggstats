@@ -147,7 +147,7 @@ func (v View) ShowSummary() {
 	sortedLevels := make([]LevelHistory, len(v.levels))
 	copy(sortedLevels, v.levels)
 	sort.Slice(sortedLevels, func(i, j int) bool {
-		field := v.args["sf"].(string)   // G, N, T, M
+		field := v.args["sf"].(string)   // G, N, A, M
 		direction := v.args["sd"].(bool) // A or D
 		var isLess bool
 		switch field {
@@ -155,7 +155,7 @@ func (v View) ShowSummary() {
 			isLess = sortedLevels[i].Count() < sortedLevels[j].Count()
 		case "N":
 			isLess = sortedLevels[i].LevelName < sortedLevels[j].LevelName
-		case "T":
+		case "A":
 			isLess = sortedLevels[i].Mean() < sortedLevels[j].Mean()
 		case "M":
 			isLess = sortedLevels[i].Min() < sortedLevels[j].Min()

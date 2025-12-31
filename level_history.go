@@ -41,7 +41,7 @@ func (lh LevelHistory) Min() int {
 	}
 	var record = lh.Records[0]
 	var least = record.Seconds
-	for _, record = range(lh.Records) {
+	for _, record = range lh.Records {
 		seconds := record.Seconds
 		if seconds < least {
 			least = seconds
