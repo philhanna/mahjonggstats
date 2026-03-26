@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning].
 The format is based on [Keep a Changelog].
 	
-## [Unreleased]
+## [4.0.0] - 2026-03-25
 ### Added
 - Python package layout under `src/mahjonggstats` with argparse CLI entrypoint.
 - Pytest suite covering parser, model, statistics, controller/view behavior, and CLI validation.
@@ -62,7 +62,7 @@ Compact display
 
 [Semantic Versioning]: http://semver.org
 [Keep a Changelog]: http://keepachangelog.com
-[Unreleased]: https://github.com/philhanna/mahjonggstats/compare/v3.1.0..HEAD
+[4.0.0]: https://github.com/philhanna/mahjonggstats/compare/v3.1.0..4.0.0
 [v3.1.0]: https://github.com/philhanna/mahjonggstats/compare/v3.0.2..v3.1.0
 [v3.0.2]: https://github.com/philhanna/mahjonggstats/compare/v3.0.1..v3.0.2
 [v3.0.1]: https://github.com/philhanna/mahjonggstats/compare/v3.0.0..v3.0.1
