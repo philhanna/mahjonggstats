@@ -32,25 +32,45 @@ python -m pytest -q
 ```
 
 ## Software architecture
-This project uses a [Model-View-Controller][idMVC] approach.
-Here are the key Python types associated with each:
 
-### Model
-- `History` (`src/mahjonggstats/history.py`)
-- `HistoryLine` (`src/mahjonggstats/history_line.py`)
-- `LevelHistory` (`src/mahjonggstats/level_history.py`)
-  
-### View
-- `View` (`src/mahjonggstats/view.py`)
+This project uses a [Ports and Adapters (Hexagonal)][idHex] architecture.
 
-### Controller
-- `Controller` (`src/mahjonggstats/controller.py`)
+### Domain
+Pure business logic with no I/O.
 
-The CLI entrypoint is `src/mahjonggstats/cli.py`.
+- `History` — aggregate built from a list of records (`src/mahjonggstats/domain/history.py`)
+- `HistoryLine` — value object parsed from one line of the history file (`src/mahjonggstats/domain/history_line.py`)
+- `LevelHistory` — per-level statistics: count, mean, min, std dev, confidence interval (`src/mahjonggstats/domain/level_history.py`)
+
+### Ports
+Interfaces that decouple the application core from infrastructure.
+
+- `HistoryLoader` — Protocol for any record source (`src/mahjonggstats/ports/history_loader.py`)
+- `Presenter` — Protocol for any output formatter (`src/mahjonggstats/ports/presenter.py`)
+- `StatsQuery` — Frozen dataclass carrying the user's intent (`src/mahjonggstats/ports/stats_query.py`)
+
+### Adapters
+Concrete implementations of the ports.
+
+- `FileHistoryLoader` — reads the gnome-mahjongg history file (`src/mahjonggstats/adapters/file_history_loader.py`)
+- `TextPresenter` — formats all text output (`src/mahjonggstats/adapters/text_presenter.py`)
+
+### Application
+Orchestration only; depends on ports, never on concrete adapters.
+
+- `StatsService` — loads records, builds the domain model, delegates to the presenter (`src/mahjonggstats/application/stats_service.py`)
+
+### CLI
+The primary driving adapter and the sole wiring point where concrete adapters are
+instantiated and injected into `StatsService`.
+
+- `src/mahjonggstats/cli.py`
+
+See [docs/calltree.md](docs/calltree.md) for a full trace of one invocation through the stack.
 
 ## References
 - [Github repository](https://github.com/philhanna/mahjonggstats)
 - [Github repository for gnome-mahjongg](https://github.com/GNOME/gnome-mahjongg)
 - [Gnome wiki for Mahjongg](https://wiki.gnome.org/Apps/Mahjongg)
 
-[idMVC]: https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller
+[idHex]: https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)
