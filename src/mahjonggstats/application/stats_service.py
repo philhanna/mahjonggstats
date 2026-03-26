@@ -1,7 +1,7 @@
 # mahjonggstats.application.stats_service
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from mahjonggstats.domain.history import History
 from mahjonggstats.ports.history_loader_port import HistoryLoaderPort
@@ -52,4 +52,7 @@ class StatsService:
         """
         records = self.loader.load()
         history = History.from_records(records)
+        if query.name:
+            resolved = history.resolve_level_name(query.name)
+            query = replace(query, name=resolved)
         return self.presenter.render(history, query)

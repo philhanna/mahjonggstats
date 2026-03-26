@@ -77,6 +77,35 @@ class History:
             raise ValueError("There is no history")
         return max(record.game_datetime for record in self.records)
 
+    def resolve_level_name(self, partial: str) -> str:
+        """Resolve a partial or full level name to the unique matching name.
+
+        Comparison is case-insensitive and matches any level name that
+        contains ``partial`` as a substring.  An exact match (case-sensitive)
+        is returned immediately without ambiguity checking.
+
+        Args:
+            partial: The full or partial level name supplied by the user.
+
+        Returns:
+            The unique level name from the history that matches ``partial``.
+
+        Raises:
+            ValueError: If no level name matches, or if more than one does.
+        """
+        if partial in self.levels:
+            return partial
+
+        needle = partial.lower()
+        matches = [name for name in self.levels if needle in name.lower()]
+
+        if not matches:
+            raise ValueError(f"No level found matching '{partial}'")
+        if len(matches) > 1:
+            ambiguous = ", ".join(sorted(matches))
+            raise ValueError(f"'{partial}' is ambiguous: {ambiguous}")
+        return matches[0]
+
     def level_names(self) -> list[str]:
         """Return all level names sorted by ascending mean game time.
 
