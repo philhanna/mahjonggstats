@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mahjonggstats"
+version = "0.1.0"
+description = "Display statistics from Gnome Mahjongg history"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{name = "Converted from Go project"}]
+dependencies = []
+
+[project.scripts]
+mahjonggstats = "mahjonggstats.cli:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

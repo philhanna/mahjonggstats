@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning].
 The format is based on [Keep a Changelog].
 	
 ## [Unreleased]
+- Converted implementation from Go to Python 3.12+.
+- Added Python package layout under `src/mahjonggstats` with argparse CLI.
+- Added pytest suite for parser, model, stats, controller, and CLI validation.
 
 ## [v3.1.0] - 2023-02-25
 Change sort and prefix
