@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import importlib.metadata
 import sys
 
 from mahjonggstats.adapters.file_history_loader import FileHistoryLoader
@@ -65,10 +66,12 @@ def build_parser() -> argparse.ArgumentParser:
         A configured ``argparse.ArgumentParser`` ready to call
         ``parse_args()`` on.
     """
+    version = importlib.metadata.version("mahjonggstats")
     parser = argparse.ArgumentParser(
         prog="mahjonggstats",
         description="Displays statistics from Gnome mahjongg.",
     )
+    parser.add_argument("--version", action="version", version=f"%(prog)s {version}")
     parser.add_argument("-n", "--name", default="", help="Include only level name NAME")
     parser.add_argument(
         "-l",
