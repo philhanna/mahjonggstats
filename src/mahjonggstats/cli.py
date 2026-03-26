@@ -3,9 +3,10 @@ from __future__ import annotations
 import argparse
 import sys
 
-from .controller import Controller
-from .history import History
-from .view import View
+from mahjonggstats.adapters.file_history_loader import FileHistoryLoader
+from mahjonggstats.adapters.text_presenter import TextPresenter
+from mahjonggstats.application.stats_service import StatsService
+from mahjonggstats.ports.stats_query import StatsQuery
 
 
 def validate_sort_option(sort_opt: str) -> tuple[str, bool]:
@@ -54,18 +55,19 @@ def main(argv: list[str] | None = None) -> int:
     ns = parser.parse_args(argv)
 
     try:
-        sort_field, direction = validate_sort_option(ns.sort)
-        args: dict[str, object] = {
-            "n": ns.name,
-            "l": ns.level_names_only,
-            "sf": sort_field,
-            "sd": direction,
-            "v": ns.verbose,
-        }
-        model = History.create()
-        view = View(model=model, args=args)
-        controller = Controller.create(view=view, args=args)
-        sys.stdout.write(controller.run())
+        sort_field, sort_descending = validate_sort_option(ns.sort)
+        query = StatsQuery(
+            name=ns.name,
+            level_names_only=ns.level_names_only,
+            sort_field=sort_field,
+            sort_descending=sort_descending,
+            verbose=ns.verbose,
+        )
+        service = StatsService(
+            loader=FileHistoryLoader(),
+            presenter=TextPresenter(),
+        )
+        sys.stdout.write(service.run(query))
         return 0
     except ValueError as exc:
         parser.exit(status=1, message=f"{exc}\n")

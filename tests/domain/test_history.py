@@ -1,8 +1,9 @@
+# tests.domain.test_history
 from __future__ import annotations
 
 from datetime import datetime
 
-from mahjonggstats.history import History
+from mahjonggstats.domain.history import History
 
 
 def test_history_new(history: History) -> None:

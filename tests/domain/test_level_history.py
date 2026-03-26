@@ -1,8 +1,9 @@
+# tests.domain.test_level_history
 from __future__ import annotations
 
-from mahjonggstats.history import History
+from mahjonggstats.domain.history import History
 
-from .conftest import almost_equal
+from tests.conftest import almost_equal
 
 
 def _level_records(history: History, level_name: str):

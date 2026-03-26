@@ -1,10 +1,11 @@
+# tests.domain.test_history_line
 from __future__ import annotations
 
 from datetime import datetime
 
 import pytest
 
-from mahjonggstats.history_line import HistoryLine, date_string, format_time
+from mahjonggstats.domain.history_line import HistoryLine, date_string, format_time
 
 
 def test_history_line_constructor() -> None:

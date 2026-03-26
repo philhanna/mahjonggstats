@@ -3,6 +3,29 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning].
 The format is based on [Keep a Changelog].
 	
+## [Unreleased]
+### Changed
+- Refactored internal architecture to Ports and Adapters (Hexagonal) pattern.
+  - `domain/` — pure business logic with no I/O: `History`, `HistoryLine`, `LevelHistory`.
+    `History.create(loader)` replaced by `History.from_records(records)` to eliminate the
+    outbound dependency from the domain layer.
+  - `ports/` — interface definitions: `HistoryLoader` Protocol (outbound), `Presenter`
+    Protocol (outbound), `StatsQuery` frozen dataclass (inbound query model, replaces
+    the untyped `args` dict).
+  - `adapters/` — concrete implementations: `FileHistoryLoader` (reads gnome-mahjongg
+    history file), `TextPresenter` (formats all text output, absorbs both former `View`
+    and `Controller`).
+  - `application/` — `StatsService` orchestrates loading and presentation by depending
+    only on the `HistoryLoader` and `Presenter` protocols; never on concrete adapters.
+  - `cli.py` — sole wiring point where concrete adapters are instantiated and injected
+    into `StatsService`.
+- Test suite reorganized to mirror the new package structure under `tests/domain/`,
+  `tests/adapters/`, and `tests/application/`.
+
+### Removed
+- Flat-layout modules `history.py`, `history_line.py`, `level_history.py`, `view.py`,
+  and `controller.py` (superseded by the layered structure above).
+
 ## [4.0.0] - 2026-03-25
 ### Added
 - Python package layout under `src/mahjonggstats` with argparse CLI entrypoint.
