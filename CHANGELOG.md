@@ -85,11 +85,11 @@ Compact display
 
 [Semantic Versioning]: http://semver.org
 [Keep a Changelog]: http://keepachangelog.com
-[4.0.0]: https://github.com/philhanna/mahjonggstats/compare/v3.1.0..4.0.0
-[v3.1.0]: https://github.com/philhanna/mahjonggstats/compare/v3.0.2..v3.1.0
-[v3.0.2]: https://github.com/philhanna/mahjonggstats/compare/v3.0.1..v3.0.2
-[v3.0.1]: https://github.com/philhanna/mahjonggstats/compare/v3.0.0..v3.0.1
-[v3.0.0]: https://github.com/philhanna/mahjonggstats/compare/2.3.1..v3.0.0
+[4.0.0]: https://github.com/philhanna/mahjonggstats/compare/3.1.0..4.0.0
+[v3.1.0]: https://github.com/philhanna/mahjonggstats/compare/3.0.2..3.1.0
+[v3.0.2]: https://github.com/philhanna/mahjonggstats/compare/3.0.1..3.0.2
+[v3.0.1]: https://github.com/philhanna/mahjonggstats/compare/3.0.0..3.0.1
+[v3.0.0]: https://github.com/philhanna/mahjonggstats/compare/2.3.1..3.0.0
 [2.3.1]: https://github.com/philhanna/mahjonggstats/compare/2.3.0..2.3.1
 [2.3.0]: https://github.com/philhanna/mahjonggstats/compare/2.2.1..2.3.0
 [2.2.1]: https://github.com/philhanna/mahjonggstats/compare/2.2.0..2.2.1
