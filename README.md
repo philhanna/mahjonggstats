@@ -45,9 +45,9 @@ Pure business logic with no I/O.
 ### Ports
 Interfaces that decouple the application core from infrastructure.
 
-- `HistoryLoader` — Protocol for any record source (`src/mahjonggstats/ports/history_loader.py`)
-- `Presenter` — Protocol for any output formatter (`src/mahjonggstats/ports/presenter.py`)
-- `StatsQuery` — Frozen dataclass carrying the user's intent (`src/mahjonggstats/ports/stats_query.py`)
+- `HistoryLoaderPort` — Protocol for any record source (`src/mahjonggstats/ports/history_loader_port.py`)
+- `PresenterPort` — Protocol for any output formatter (`src/mahjonggstats/ports/presenter_port.py`)
+- `StatsQueryPort` — Frozen dataclass carrying the user's intent (`src/mahjonggstats/ports/stats_query_port.py`)
 
 ### Adapters
 Concrete implementations of the ports.
@@ -55,10 +55,13 @@ Concrete implementations of the ports.
 - `FileHistoryLoader` — reads the gnome-mahjongg history file (`src/mahjonggstats/adapters/file_history_loader.py`)
 - `TextPresenter` — formats all text output (`src/mahjonggstats/adapters/text_presenter.py`)
 
-### Application
-Orchestration only; depends on ports, never on concrete adapters.
+### Application (Use Cases)
+Orchestration only; depends on ports, never on concrete adapters.  The
+`application/` package is the use-case layer — each service class represents
+one discrete thing the system can do on behalf of the caller.
 
-- `StatsService` — loads records, builds the domain model, delegates to the presenter (`src/mahjonggstats/application/stats_service.py`)
+- `StatsService` — the single use case: load the history, build the domain
+  model, and produce a formatted report (`src/mahjonggstats/application/stats_service.py`)
 
 ### CLI
 The primary driving adapter and the sole wiring point where concrete adapters are
