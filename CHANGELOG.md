@@ -3,6 +3,20 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning].
 The format is based on [Keep a Changelog].
 	
+## [Unreleased]
+### Added
+- Detailed docstrings on all classes, methods, and functions across every
+  source file.
+- `docs/calltree.md` tracing a full invocation through the stack with
+  clickable file and line-number links.
+
+### Changed
+- Moved `main()` to be the first function in `cli.py`.
+- Moved issue-23 test data into `tests/testdata/`.
+- Removed `test23.sh` manual smoke-test script.
+- Renamed all `v`-prefixed git tags (e.g. `v3.1.0` → `3.1.0`) for
+  consistency with the rest of the tag history.
+
 ## [4.1.0] - 2026-03-25
 ### Changed
 - Refactored internal architecture to Ports and Adapters (Hexagonal) pattern.
