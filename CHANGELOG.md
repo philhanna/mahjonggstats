@@ -4,9 +4,19 @@ This project adheres to [Semantic Versioning].
 The format is based on [Keep a Changelog].
 	
 ## [Unreleased]
-- Converted implementation from Go to Python 3.12+.
-- Added Python package layout under `src/mahjonggstats` with argparse CLI.
-- Added pytest suite for parser, model, stats, controller, and CLI validation.
+### Added
+- Python package layout under `src/mahjonggstats` with argparse CLI entrypoint.
+- Pytest suite covering parser, model, statistics, controller/view behavior, and CLI validation.
+- Project packaging configuration via `pyproject.toml`.
+- Migration planning document in `docs/plans/toPython.md`.
+
+### Changed
+- Converted the implementation from Go to Python 3.12+.
+- Updated README to Python-first installation, usage, and test instructions.
+
+### Removed
+- Legacy Go application sources and tests.
+- Go module files (`go.mod`, `go.sum`).
 
 ## [v3.1.0] - 2023-02-25
 Change sort and prefix
