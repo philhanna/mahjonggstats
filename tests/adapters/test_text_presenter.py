@@ -4,10 +4,10 @@ from __future__ import annotations
 import pytest
 
 from mahjonggstats.adapters.text_presenter import TextPresenter
-from mahjonggstats.ports.stats_query import StatsQuery
+from mahjonggstats.ports.stats_query_port import StatsQueryPort
 
 
-def _query(**overrides) -> StatsQuery:
+def _query(**overrides) -> StatsQueryPort:
     defaults = dict(
         name="",
         level_names_only=False,
@@ -16,7 +16,7 @@ def _query(**overrides) -> StatsQuery:
         verbose=False,
     )
     defaults.update(overrides)
-    return StatsQuery(**defaults)
+    return StatsQueryPort(**defaults)
 
 
 def test_presenter_summary_mode(history) -> None:

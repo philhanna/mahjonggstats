@@ -1,4 +1,4 @@
-# mahjonggstats.ports.history_loader
+# mahjonggstats.ports.history_loader_port
 from __future__ import annotations
 
 from typing import Protocol
@@ -6,7 +6,7 @@ from typing import Protocol
 from mahjonggstats.domain.history_line import HistoryLine
 
 
-class HistoryLoader(Protocol):
+class HistoryLoaderPort(Protocol):
     """Outbound port — any source of raw game records.
 
     Implementors read game records from some backing store (file, database,

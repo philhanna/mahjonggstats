@@ -1,11 +1,11 @@
-# mahjonggstats.ports.stats_query
+# mahjonggstats.ports.stats_query_port
 from __future__ import annotations
 
 from dataclasses import dataclass
 
 
 @dataclass(frozen=True, slots=True)
-class StatsQuery:
+class StatsQueryPort:
     """Inbound query model — the user's intent expressed as a value object.
 
     Captures every option parsed from the command line and passes them as a

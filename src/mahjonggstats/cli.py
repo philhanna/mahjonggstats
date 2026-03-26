@@ -6,14 +6,14 @@ import sys
 from mahjonggstats.adapters.file_history_loader import FileHistoryLoader
 from mahjonggstats.adapters.text_presenter import TextPresenter
 from mahjonggstats.application.stats_service import StatsService
-from mahjonggstats.ports.stats_query import StatsQuery
+from mahjonggstats.ports.stats_query_port import StatsQueryPort
 
 
 def main(argv: list[str] | None = None) -> int:
     """Entry point for the ``mahjonggstats`` command.
 
     Parses command-line arguments, validates the sort option, constructs the
-    ``StatsQuery`` value object, wires the concrete adapters into
+    ``StatsQueryPort`` value object, wires the concrete adapters into
     ``StatsService``, and writes the result to stdout.  This function is the
     sole place in the codebase where concrete adapters (``FileHistoryLoader``
     and ``TextPresenter``) are instantiated and injected.
@@ -34,7 +34,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         sort_field, sort_descending = validate_sort_option(ns.sort)
-        query = StatsQuery(
+        query = StatsQueryPort(
             name=ns.name,
             level_names_only=ns.level_names_only,
             sort_field=sort_field,

@@ -1,13 +1,13 @@
-# mahjonggstats.ports.presenter
+# mahjonggstats.ports.presenter_port
 from __future__ import annotations
 
 from typing import Protocol
 
 from mahjonggstats.domain.history import History
-from mahjonggstats.ports.stats_query import StatsQuery
+from mahjonggstats.ports.stats_query_port import StatsQueryPort
 
 
-class Presenter(Protocol):
+class PresenterPort(Protocol):
     """Outbound port — any formatter that turns a History into a string.
 
     ``StatsService`` depends on this protocol so that the output format can
@@ -19,7 +19,7 @@ class Presenter(Protocol):
         ``TextPresenter`` — formats human-readable text output.
     """
 
-    def render(self, history: History, query: StatsQuery) -> str:
+    def render(self, history: History, query: StatsQueryPort) -> str:
         """Format ``history`` according to ``query`` and return the result.
 
         Args:

@@ -4,7 +4,7 @@ from __future__ import annotations
 from mahjonggstats.domain.history import History
 from mahjonggstats.domain.history_line import format_time
 from mahjonggstats.domain.level_history import LevelHistory
-from mahjonggstats.ports.stats_query import StatsQuery
+from mahjonggstats.ports.stats_query_port import StatsQueryPort
 
 
 def _pluralize(count: int, name: str) -> str:
@@ -26,7 +26,7 @@ class TextPresenter:
     """Driven adapter — formats a ``History`` as human-readable text.
 
     Implements the ``Presenter`` port.  ``render()`` dispatches to one of
-    three private helpers depending on the flags in ``StatsQuery``:
+    three private helpers depending on the flags in ``StatsQueryPort``:
 
     * ``_show_level_names`` — ``-l`` / ``--level-names-only``: one level
       name per line, alphabetically sorted.
@@ -35,14 +35,14 @@ class TextPresenter:
       optionally preceded by a heading line when no ``-n`` filter is active.
     * ``_show_summary`` — default: one summary line per level showing game
       count, average time, and minimum time, sorted by the field and
-      direction specified in ``StatsQuery``.
+      direction specified in ``StatsQueryPort``.
 
     Level filtering (``-n`` / ``--name``) and sort ordering are applied
     inside ``_resolve_levels`` and ``_show_summary`` respectively, so every
     output path shares the same filtering logic.
     """
 
-    def render(self, history: History, query: StatsQuery) -> str:
+    def render(self, history: History, query: StatsQueryPort) -> str:
         """Format ``history`` according to ``query`` and return the result.
 
         Dispatches to the appropriate private helper based on the flags in
@@ -74,7 +74,7 @@ class TextPresenter:
         return "".join(output)
 
     def _resolve_levels(
-        self, history: History, query: StatsQuery
+        self, history: History, query: StatsQueryPort
     ) -> tuple[list[str], list[LevelHistory]]:
         """Return the level names and histories to display.
 
@@ -121,7 +121,7 @@ class TextPresenter:
         end = history.latest_date().date().isoformat()
         return f"\nMahjongg history of {count} games from {start} to {end}\n"
 
-    def _show_level_names(self, history: History, query: StatsQuery) -> str:
+    def _show_level_names(self, history: History, query: StatsQueryPort) -> str:
         """Return an alphabetically sorted list of level names, one per line.
 
         Used when ``query.level_names_only`` is ``True`` (``-l`` flag).
@@ -138,7 +138,7 @@ class TextPresenter:
         names = sorted(level_names)
         return "\n".join(names) + ("\n" if names else "")
 
-    def _show_summary(self, history: History, query: StatsQuery) -> str:
+    def _show_summary(self, history: History, query: StatsQueryPort) -> str:
         """Return a one-line-per-level summary table (the default output mode).
 
         Each line shows game count, average time, and minimum time for one
@@ -180,7 +180,7 @@ class TextPresenter:
             lines.append(f"{part1} {part2}")
         return "\n".join(lines) + ("\n" if lines else "")
 
-    def _show_all_levels(self, history: History, query: StatsQuery) -> str:
+    def _show_all_levels(self, history: History, query: StatsQueryPort) -> str:
         """Return full statistics for each level (the verbose output mode).
 
         For every level prints: game count, mean (mu), standard deviation

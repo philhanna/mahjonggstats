@@ -4,24 +4,24 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from mahjonggstats.domain.history import History
-from mahjonggstats.ports.history_loader import HistoryLoader
-from mahjonggstats.ports.presenter import Presenter
-from mahjonggstats.ports.stats_query import StatsQuery
+from mahjonggstats.ports.history_loader_port import HistoryLoaderPort
+from mahjonggstats.ports.presenter_port import PresenterPort
+from mahjonggstats.ports.stats_query_port import StatsQueryPort
 
 
 @dataclass(slots=True)
 class StatsService:
     """Application service — the single use-case entry point.
 
-    Orchestrates the two outbound ports to fulfil a ``StatsQuery``:
+    Orchestrates the two outbound ports to fulfil a ``StatsQueryPort``:
 
     1. Calls ``loader.load()`` to obtain raw ``HistoryLine`` records from
-       whatever backing store the injected ``HistoryLoader`` represents.
+       whatever backing store the injected ``HistoryLoaderPort`` represents.
     2. Passes the records to ``History.from_records()`` to build the domain
        aggregate.
     3. Delegates formatting entirely to ``presenter.render()``.
 
-    ``StatsService`` depends only on the ``HistoryLoader`` and ``Presenter``
+    ``StatsService`` depends only on the ``HistoryLoaderPort`` and ``PresenterPort``
     protocols — never on concrete adapter classes — so any loader or
     presenter can be substituted without modifying this class.  The CLI
     adapter is the sole wiring point where the concrete adapters are chosen
@@ -33,10 +33,10 @@ class StatsService:
             (outbound port).
     """
 
-    loader: HistoryLoader
-    presenter: Presenter
+    loader: HistoryLoaderPort
+    presenter: PresenterPort
 
-    def run(self, query: StatsQuery) -> str:
+    def run(self, query: StatsQueryPort) -> str:
         """Execute the stats use case and return formatted output.
 
         Calls ``self.loader.load()`` to fetch raw records, builds the domain
@@ -45,7 +45,7 @@ class StatsService:
 
         Args:
             query: The user's intent — filtering, sort options, and verbosity
-                flags — as a ``StatsQuery`` value object.
+                flags — as a ``StatsQueryPort`` value object.
 
         Returns:
             A formatted string produced by the injected presenter.
