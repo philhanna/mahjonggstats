@@ -4,7 +4,11 @@ This project adheres to [Semantic Versioning].
 The format is based on [Keep a Changelog].
 	
 ## [Unreleased]
+
+## [4.1.1] - 2026-03-25
 ### Added
+- Partial level name matching: `-n` / `--name` now accepts a case-insensitive
+  substring; raises an error if the input matches zero or more than one level.
 - Detailed docstrings on all classes, methods, and functions across every
   source file.
 - `docs/calltree.md` tracing a full invocation through the stack with
@@ -100,6 +104,7 @@ Compact display
 
 [Semantic Versioning]: http://semver.org
 [Keep a Changelog]: http://keepachangelog.com
+[4.1.1]: https://github.com/philhanna/mahjonggstats/compare/4.1.0..4.1.1
 [4.1.0]: https://github.com/philhanna/mahjonggstats/compare/4.0.0..4.1.0
 [4.0.0]: https://github.com/philhanna/mahjonggstats/compare/3.1.0..4.0.0
 [v3.1.0]: https://github.com/philhanna/mahjonggstats/compare/3.0.2..3.1.0
