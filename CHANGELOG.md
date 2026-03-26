@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning].
 The format is based on [Keep a Changelog].
 	
 ## [Unreleased]
+### Added
+- `--version` option prints the current application version and exits.
 
 ## [4.1.1] - 2026-03-25
 ### Added
