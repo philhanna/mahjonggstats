@@ -8,6 +8,15 @@ from mahjonggstats.ports.stats_query import StatsQuery
 
 
 def _pluralize(count: int, name: str) -> str:
+    """Return ``name`` or its naive plural form depending on ``count``.
+
+    Args:
+        count: The quantity being described.
+        name: The singular noun (e.g. ``"game"``).
+
+    Returns:
+        ``name`` unchanged when ``count == 1``, otherwise ``name + "s"``.
+    """
     if count == 1:
         return name
     return f"{name}s"
@@ -34,6 +43,24 @@ class TextPresenter:
     """
 
     def render(self, history: History, query: StatsQuery) -> str:
+        """Format ``history`` according to ``query`` and return the result.
+
+        Dispatches to the appropriate private helper based on the flags in
+        ``query``.  ``level_names_only`` takes priority; otherwise ``verbose``
+        selects full statistics, and the default produces the summary table.
+
+        Args:
+            history: The fully built domain aggregate to present.
+            query: The user's options controlling filtering, sorting, and
+                verbosity.
+
+        Returns:
+            A formatted string ready to write to stdout.
+
+        Raises:
+            ValueError: If ``query.name`` is set to a level name that does
+                not exist in ``history``.
+        """
         if query.level_names_only:
             return self._show_level_names(history, query)
 
@@ -49,6 +76,25 @@ class TextPresenter:
     def _resolve_levels(
         self, history: History, query: StatsQuery
     ) -> tuple[list[str], list[LevelHistory]]:
+        """Return the level names and histories to display.
+
+        If ``query.name`` is set, returns only that single level.  Otherwise
+        returns all levels ordered by ascending mean time (via
+        ``History.level_names()``).
+
+        Args:
+            history: The domain aggregate containing all levels.
+            query: The user's query; ``query.name`` is inspected for
+                filtering.
+
+        Returns:
+            A ``(level_names, levels)`` tuple where the two lists are
+            parallel and in the same order.
+
+        Raises:
+            ValueError: If ``query.name`` is non-empty but not present in
+                ``history.levels``.
+        """
         if query.name != "":
             if query.name not in history.levels:
                 raise ValueError(
@@ -60,17 +106,53 @@ class TextPresenter:
         return level_names, levels
 
     def _show_heading(self, history: History) -> str:
+        """Return a one-line summary heading for the verbose output mode.
+
+        Args:
+            history: The domain aggregate used to derive game count and
+                date range.
+
+        Returns:
+            A newline-delimited string of the form
+            ``"\\nMahjongg history of N games from YYYY-MM-DD to YYYY-MM-DD\\n"``.
+        """
         count = len(history.records)
         start = history.earliest_date().date().isoformat()
         end = history.latest_date().date().isoformat()
         return f"\nMahjongg history of {count} games from {start} to {end}\n"
 
     def _show_level_names(self, history: History, query: StatsQuery) -> str:
+        """Return an alphabetically sorted list of level names, one per line.
+
+        Used when ``query.level_names_only`` is ``True`` (``-l`` flag).
+
+        Args:
+            history: The domain aggregate containing all levels.
+            query: The user's query; ``query.name`` is forwarded to
+                ``_resolve_levels`` for optional filtering.
+
+        Returns:
+            A newline-terminated string with one level name per line.
+        """
         level_names, _ = self._resolve_levels(history, query)
         names = sorted(level_names)
         return "\n".join(names) + ("\n" if names else "")
 
     def _show_summary(self, history: History, query: StatsQuery) -> str:
+        """Return a one-line-per-level summary table (the default output mode).
+
+        Each line shows game count, average time, and minimum time for one
+        level.  Lines are left-padded so that the statistic columns align.
+        The sort field and direction are taken from ``query.sort_field`` and
+        ``query.sort_descending``.
+
+        Args:
+            history: The domain aggregate containing all levels.
+            query: The user's query controlling filtering and sort order.
+
+        Returns:
+            A newline-terminated string with one summary line per level.
+        """
         _, levels = self._resolve_levels(history, query)
 
         def prefix(level: LevelHistory) -> str:
@@ -99,6 +181,20 @@ class TextPresenter:
         return "\n".join(lines) + ("\n" if lines else "")
 
     def _show_all_levels(self, history: History, query: StatsQuery) -> str:
+        """Return full statistics for each level (the verbose output mode).
+
+        For every level prints: game count, mean (mu), standard deviation
+        (sigma), 95% confidence interval, and the top-5 fastest scores with
+        their dates.
+
+        Args:
+            history: The domain aggregate containing all levels.
+            query: The user's query; ``query.name`` is forwarded to
+                ``_resolve_levels`` for optional filtering.
+
+        Returns:
+            A newline-terminated string with a multi-line block per level.
+        """
         level_names, levels = self._resolve_levels(history, query)
 
         lines: list[str] = []

@@ -29,6 +29,19 @@ class History:
 
     @classmethod
     def from_records(cls, records: list[HistoryLine]) -> "History":
+        """Build a ``History`` aggregate from a flat list of records.
+
+        Groups the records by ``level_name`` and constructs one
+        ``LevelHistory`` per group.  This is the canonical factory method;
+        prefer it over calling the dataclass constructor directly.
+
+        Args:
+            records: All game records returned by a ``HistoryLoader``,
+                in any order.
+
+        Returns:
+            A fully populated ``History`` instance.
+        """
         grouped: dict[str, list[HistoryLine]] = defaultdict(list)
         for record in records:
             grouped[record.level_name].append(record)
@@ -39,15 +52,40 @@ class History:
         return cls(records=records, levels=levels)
 
     def earliest_date(self) -> datetime:
+        """Return the datetime of the oldest game in the history.
+
+        Returns:
+            The minimum ``game_datetime`` across all records.
+
+        Raises:
+            ValueError: If ``self.records`` is empty.
+        """
         if not self.records:
             raise ValueError("There is no history")
         return min(record.game_datetime for record in self.records)
 
     def latest_date(self) -> datetime:
+        """Return the datetime of the most recent game in the history.
+
+        Returns:
+            The maximum ``game_datetime`` across all records.
+
+        Raises:
+            ValueError: If ``self.records`` is empty.
+        """
         if not self.records:
             raise ValueError("There is no history")
         return max(record.game_datetime for record in self.records)
 
     def level_names(self) -> list[str]:
+        """Return all level names sorted by ascending mean game time.
+
+        Levels with a lower average completion time appear first.  This is
+        the default ordering used by ``TextPresenter`` when no explicit sort
+        option is supplied.
+
+        Returns:
+            A list of level name strings.
+        """
         names = list(self.levels.keys())
         return sorted(names, key=lambda name: self.levels[name].mean())

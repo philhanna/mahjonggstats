@@ -30,6 +30,17 @@ class FileHistoryLoader:
     filename: Path | None = None
 
     def load(self) -> list[HistoryLine]:
+        """Read the history file and return all valid game records.
+
+        Resolves ``self.filename`` to the default path if not set, then reads
+        every non-blank line and parses it with ``HistoryLine.parse()``.
+        Malformed lines (wrong number of fields, bad timestamp format, or
+        non-integer seconds) are silently skipped.
+
+        Returns:
+            A list of ``HistoryLine`` objects in file order.  Returns an
+            empty list if the file does not exist.
+        """
         filename = self.filename
         if filename is None:
             filename = Path.home() / DEFAULT_FILENAME

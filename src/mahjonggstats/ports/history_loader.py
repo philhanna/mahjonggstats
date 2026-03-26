@@ -21,4 +21,10 @@ class HistoryLoader(Protocol):
     """
 
     def load(self) -> list[HistoryLine]:
+        """Load and return all game records from the backing store.
+
+        Returns:
+            A flat list of ``HistoryLine`` objects.  May be empty if no
+            records exist.
+        """
         ...

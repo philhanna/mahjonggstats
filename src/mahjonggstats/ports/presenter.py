@@ -20,4 +20,14 @@ class Presenter(Protocol):
     """
 
     def render(self, history: History, query: StatsQuery) -> str:
+        """Format ``history`` according to ``query`` and return the result.
+
+        Args:
+            history: The fully built domain aggregate to present.
+            query: The user's options controlling filtering, sorting, and
+                verbosity.
+
+        Returns:
+            A formatted string ready to write to stdout.
+        """
         ...

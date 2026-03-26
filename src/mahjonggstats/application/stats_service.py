@@ -37,6 +37,19 @@ class StatsService:
     presenter: Presenter
 
     def run(self, query: StatsQuery) -> str:
+        """Execute the stats use case and return formatted output.
+
+        Calls ``self.loader.load()`` to fetch raw records, builds the domain
+        aggregate with ``History.from_records()``, then delegates formatting
+        entirely to ``self.presenter.render()``.
+
+        Args:
+            query: The user's intent — filtering, sort options, and verbosity
+                flags — as a ``StatsQuery`` value object.
+
+        Returns:
+            A formatted string produced by the injected presenter.
+        """
         records = self.loader.load()
         history = History.from_records(records)
         return self.presenter.render(history, query)
