@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning].
 The format is based on [Keep a Changelog].
 	
-## [Unreleased]
+## [4.1.0] - 2026-03-25
 ### Changed
 - Refactored internal architecture to Ports and Adapters (Hexagonal) pattern.
   - `domain/` — pure business logic with no I/O: `History`, `HistoryLine`, `LevelHistory`.
@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog].
     into `StatsService`.
 - Test suite reorganized to mirror the new package structure under `tests/domain/`,
   `tests/adapters/`, and `tests/application/`.
+- Updated README and added `docs/calltree.md` documenting the full invocation flow.
 
 ### Removed
 - Flat-layout modules `history.py`, `history_line.py`, `level_history.py`, `view.py`,
@@ -85,6 +86,7 @@ Compact display
 
 [Semantic Versioning]: http://semver.org
 [Keep a Changelog]: http://keepachangelog.com
+[4.1.0]: https://github.com/philhanna/mahjonggstats/compare/4.0.0..4.1.0
 [4.0.0]: https://github.com/philhanna/mahjonggstats/compare/3.1.0..4.0.0
 [v3.1.0]: https://github.com/philhanna/mahjonggstats/compare/3.0.2..3.1.0
 [v3.0.2]: https://github.com/philhanna/mahjonggstats/compare/3.0.1..3.0.2
