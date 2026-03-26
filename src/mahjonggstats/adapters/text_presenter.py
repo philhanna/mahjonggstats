@@ -14,6 +14,25 @@ def _pluralize(count: int, name: str) -> str:
 
 
 class TextPresenter:
+    """Driven adapter — formats a ``History`` as human-readable text.
+
+    Implements the ``Presenter`` port.  ``render()`` dispatches to one of
+    three private helpers depending on the flags in ``StatsQuery``:
+
+    * ``_show_level_names`` — ``-l`` / ``--level-names-only``: one level
+      name per line, alphabetically sorted.
+    * ``_show_all_levels`` — ``-v`` / ``--verbose``: full statistics for
+      each level (mean, sigma, 95% confidence range, top-5 scores),
+      optionally preceded by a heading line when no ``-n`` filter is active.
+    * ``_show_summary`` — default: one summary line per level showing game
+      count, average time, and minimum time, sorted by the field and
+      direction specified in ``StatsQuery``.
+
+    Level filtering (``-n`` / ``--name``) and sort ordering are applied
+    inside ``_resolve_levels`` and ``_show_summary`` respectively, so every
+    output path shares the same filtering logic.
+    """
+
     def render(self, history: History, query: StatsQuery) -> str:
         if query.level_names_only:
             return self._show_level_names(history, query)

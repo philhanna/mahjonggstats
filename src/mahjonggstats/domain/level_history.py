@@ -9,6 +9,17 @@ from .history_line import HistoryLine
 
 @dataclass(slots=True)
 class LevelHistory:
+    """Statistical summary of all games played at a single mahjongg level.
+
+    Aggregates every ``HistoryLine`` for one level name and exposes descriptive
+    statistics — count, minimum, mean, standard deviation, and a 95% confidence
+    interval — that are used by the presenter layer to format output.
+
+    Attributes:
+        level_name: Name of the mahjongg layout (e.g. ``"easy"``).
+        records: All game records for this level, in file order.
+    """
+
     level_name: str
     records: list[HistoryLine] = field(default_factory=list)
 

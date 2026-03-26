@@ -9,6 +9,19 @@ TIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
 
 @dataclass(slots=True)
 class HistoryLine:
+    """A single record from the gnome-mahjongg history file.
+
+    Each line in the history file represents one completed game and contains
+    three space-separated fields: an ISO-8601 timestamp, the level name, and
+    the elapsed time in seconds.  ``HistoryLine.parse()`` converts a raw text
+    line into this value object.
+
+    Attributes:
+        game_datetime: Date and time the game was completed, including timezone.
+        level_name: Name of the mahjongg layout that was played (e.g. ``"easy"``).
+        seconds: Elapsed game time in seconds.
+    """
+
     game_datetime: datetime
     level_name: str
     seconds: int

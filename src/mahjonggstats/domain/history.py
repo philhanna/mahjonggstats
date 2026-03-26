@@ -11,6 +11,19 @@ from .level_history import LevelHistory
 
 @dataclass(slots=True)
 class History:
+    """The complete game history loaded from the gnome-mahjongg history file.
+
+    Acts as the top-level domain aggregate.  It holds every ``HistoryLine``
+    record and a pre-grouped mapping from level name to ``LevelHistory``.
+    Construction is done via ``History.from_records()`` rather than directly,
+    so that grouping logic stays inside the domain and the caller only needs
+    to supply a flat list of records.
+
+    Attributes:
+        records: Every game record, in the order returned by the loader.
+        levels: Mapping from level name to its aggregated ``LevelHistory``.
+    """
+
     records: list[HistoryLine] = field(default_factory=list)
     levels: dict[str, LevelHistory] = field(default_factory=dict)
 
